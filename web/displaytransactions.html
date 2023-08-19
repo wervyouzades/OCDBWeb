@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Display Transactions</title>
+        <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+    <p>
+        <a href="checkout.html">checkout</a>
+        <a href="checkout.html">check in</a>
+        <a href="display.html">display</a>
+    </p>
+    <form>
+        <p>Display transactions (blank fields will be ignored)</p>
+        <p>
+            <label for="name">Person part of transaction: </label>
+            <input type="text" id="name" placeholder="ex. sebastian desouza">
+        </p>
+        <p>
+            <label for="code">Gear Code:</label>
+            <input type="text" id="code" placeholder="ex. 3 or CA3">
+        </p>
+        <p>
+            <label for="type">Gear Type:</label>
+            <input type="text" id="type" placeholder="ex. W">
+        </p>
+        <button type="button" id="submit">Display</button>
+    </form>
+        <div id="result"></div>
+        <script>
+            $("#submit").click(function () {
+                var data = {
+                    qtype: "DT",
+                    name: $("#name").val(),
+                    code: $("#code").val(),
+                    type: $("#type").val()                    
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            });
+        </script>
+    </body>
+</html>

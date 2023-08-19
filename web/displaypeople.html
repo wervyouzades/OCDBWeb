@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Display Gear</title>
+        <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+    <p>
+        <a href="checkout.html">checkout</a>
+        <a href="checkin.html">check in</a>
+        <a href="display.html">display</a>
+    </p>
+        <form>
+        <p>Display people (blank fields will be ignored)</p>
+        <p>
+            <input type="checkbox" id="onlyShowPeopleWithGear" name="onlyShowPeopleWithGear" value="true">only show people with gear
+        </p>
+        <button type="button" id="submit">Display</button>
+    </form>
+        <div id="result"></div>
+        <script>
+            $("#submit").click(function () {
+                var data = {
+                    qtype: "DP",
+                    onlyShowPeopleWithGear: $("#onlyShowPeopleWithGear").is(":checked")
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            });
+        </script>
+    </body>
+</html>

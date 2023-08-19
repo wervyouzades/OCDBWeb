@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Outdoors Club Gear Management</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <p>
+            <a href ="checkout.html">checkout</a> 
+        </p>
+        <p>
+            <a href ="checkin.html">check in</a> 
+        </p>
+        <p>
+            <a href ="display.html">display data</a>
+        </p>
+        <button type="button" id="check">check server status</button>
+        <div id="result"></div>
+        <script>
+            $("#check").click(function () {
+                var data = {
+                    qtype: "C",
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            });
+        </script>
+    </body>
+</html>

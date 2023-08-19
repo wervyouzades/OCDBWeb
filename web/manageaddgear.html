@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Gear</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <p>
+        <a href="checkout.html">checkout</a>
+        <a href="checkout.html">check in</a>
+        <a href="display.html">display</a>
+    </p>
+    <form>
+        <p>Add people</p>
+        <p>
+            <label for="code">Gear Code:</label>
+            <input type="text" id="code" placeholder="ex. 3, CA3">
+        </p>
+        <p>
+            <label for="type">Gear Type:</label>
+            <input type="text" id="type" placeholder="ex. w (for waterproof compression sack)">
+        </p>
+        <p>
+            <label for="modelDescription">Gear Model Description:</label>
+            <input type="text" id="modelDescription" placeholder="ex. REI Polar Pod – Fill: Synth – Size: Reg Temp: 26 – Weight: 3.44 lb – Length: 72”">
+        </p>
+        <button type="button" id="submit">Submit</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        $("#submit").click(function() {
+            var data = {
+                qtype: "MAG",
+                code: $("#code").val(),
+                type: $("#type").val(),
+                modelDescription: $("#modelDescription").val()
+            };
+            $.get("query", data, function(data) {
+                $("#result").html(data);
+            });
+        });
+    </script>
+</body>
+</html>

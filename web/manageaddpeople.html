@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add People</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <p>
+        <a href="checkout.html">checkout</a>
+        <a href="checkout.html">check in</a>
+        <a href="display.html">display</a>
+    </p>
+    <form>
+        <p>Add people</p>
+        <p>
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="ex. sebastian desouza">
+        </p>
+        <button type="button" id="submit">Submit</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        $("#submit").click(function() {
+            var data = {
+                qtype: "MAP",
+                name: $("#name").val()
+            };
+            $.get("query", data, function(data) {
+                $("#result").html(data);
+            });
+        });
+    </script>
+</body>
+</html>

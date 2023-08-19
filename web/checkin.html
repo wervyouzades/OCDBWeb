@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check in</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <p>
+        <a href="checkout.html">checkout</a>
+        <a href="checkout.html">check in</a>
+        <a href="display.html">display</a>
+    </p>
+    <form>
+        <p>Check in gear:</p>
+        <p>Key:<br> 
+            S	Sleeping Bag <br>
+            T	Tent <br>
+            P	Sleeping Pad <br>
+            L	Sleeping Bag Liner <br>
+            B	Backpack <br>
+            W	Waterproof Compression Sack <br>
+            N	Non-Waterproof Compression Sack <br>
+        <p>
+        <p>
+            <label for="code">Gear Code</label>
+            <input type="text" id="code" placeholder="ex. CA3, 3">
+        </p>
+        <p>
+            <label for="type">Gear Type</label>
+            <input type="text" id="type" placeholder="ex. W">
+        </p>
+        <button type="button" id="submit">Submit</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        $("#submit").click(function() {
+            var data = {
+                qtype: "I",
+                code: $("#code").val(),
+                type: $("#type").val()
+            };
+            $.get("query", data, function(data) {
+                $("#result").html(data);
+            });
+        });
+    </script>
+</body>
+</html>
