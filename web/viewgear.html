@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>View Gear</title>
+        <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
+    </head>
+    <body>
+    <div id="header-container"></div>
+        <div id="initialData"></div>
+        <!--<button type="button" id="submit">Edit Gear</button>-->
+        <div id="editedData"></div>
+        <script>
+        $(document).ready(function() {
+            const url = new URL(window.location.toLocaleString());
+            var data = {
+                gearIID: url.searchParams.get('iid')
+            };
+            $.get("Gear", data, function(data) {
+                $("#initialData").html(data);
+                var data2 = {
+                    gearIID: url.searchParams.get('iid'),
+                    qtype: "E0",
+                    code: $("#code").val(),
+                    gear_model: $("#gear_models").val(),
+                    notes: $("#notes").val()
+                };
+                $.get("Gear", data2, function(data2) {
+                    $("#editedData").html(data2);
+                });
+            }); 
+
+            
+        });
+    </script>
+        <!--<script>
+        $("#submit").click(function() {
+            const url = new URL(window.location.toLocaleString());
+            var data = {
+                qtype: "E1",
+                gearIID: url.searchParams.get('IID'),
+                code: $("#code").val(),
+                gear_model: $("#gear_models").val(),
+                notes: $("#notes").val()
+            };
+            $.get("Gear", data, function(data) {
+                $("#editedData").html(data);
+            });
+        });
+    </script>-->
+    </body>
+</html>

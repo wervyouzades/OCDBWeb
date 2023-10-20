@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>View Receipt</title>
+        <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <div id="result"></div>
+        <script>
+        $(document).ready(function() {
+            const url = new URL(window.location.toLocaleString());
+            var data = {
+                personIID: url.searchParams.get('iid')
+            };
+            $.get("Receipt", data, function(data) {
+                $("#result").html(data);
+            }); 
+        });
+        </script>
+    </body>
+</html>

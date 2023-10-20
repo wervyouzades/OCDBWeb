@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Remove People</title>
+    <title>Add People</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
 </head>
 <body>
-    <p>
-        <a href="checkout.html">checkout</a>
-        <a href="checkout.html">check in</a>
-        <a href="display.html">display</a>
-    </p>
+    <div id="header-container"></div>
     <form>
-        <p>Remove people</p>
+        <p>Add people</p>
         <p>
             <label for="name">Name:</label>
             <input type="text" id="name" placeholder="ex. sebastian desouza">
@@ -22,7 +23,7 @@
     <script>
         $("#submit").click(function() {
             var data = {
-                qtype: "MRP",
+                qtype: "MAP",
                 name: $("#name").val()
             };
             $.get("query", data, function(data) {

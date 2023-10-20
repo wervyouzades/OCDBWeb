@@ -32,6 +32,8 @@ public class OCDB {
     
     public static Connection conn;
     public final static String checked_in = "GEAR_CLOSET";
+    public final static String missing = "MISSING";
+    public final static String unusable = "UNUSABLE";
     public static Scanner diyan = new Scanner(System.in);
     private static long a, b;
     
@@ -262,6 +264,16 @@ public class OCDB {
             conn = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void close() {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                
+            }
         }
     }
     

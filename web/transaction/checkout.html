@@ -3,13 +3,20 @@
 <head>
     <title>Checkout</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
+    <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
 </head>
 <body>
-    <p>
-        <a href="checkout.html">checkout</a>
-        <a href="checkin.html">check in</a>
-        <a href="display.html">display</a>
-    </p>
+    <div id="header-container"></div>
     <form>
         <p>Check out gear:</p>
         <p>Key:<br> 
@@ -20,6 +27,8 @@
             B	Backpack <br>
             W	Waterproof Compression Sack <br>
             N	Non-Waterproof Compression Sack <br>
+            F   Food/Stuff Sacks <br>
+        </p>
         <p>
             <label for="name">Name:</label>
             <input type="text" id="name" placeholder="ex. sebastian desouza">
@@ -45,6 +54,24 @@
             };
             $.get("query", data, function(data) {
                 $("#result").html(data);
+            });
+        });
+    </script>
+    
+    <br><br>
+    <div id="result2"></div>
+    <form>
+    <button type="button" id="submit2">Preview Gear</button>
+    </form>
+    <script>
+        $("#submit2").click(function() {
+            var data = {
+                qtype: "PG",
+                code: $("#code").val(),
+                type: $("#type").val()
+            };
+            $.get("query", data, function(data) {
+                $("#result2").html(data);
             });
         });
     </script>

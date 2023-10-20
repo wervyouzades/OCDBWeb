@@ -15,6 +15,7 @@ import javax.*;
 import java.util.ArrayList;
 import com.google.gson.JsonObject;
 import java.io.Writer;
+import java.security.Principal;
 
 /**
  *
@@ -38,6 +39,11 @@ public class QueryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             DT.populateLocalDB();
+            Principal userPrincipal = request.getUserPrincipal();
+            String username = "";
+            if (userPrincipal != null) {
+                username = userPrincipal.getName();
+            }
             switch (request.getParameter("qtype").toLowerCase()) {
                 case "c"://check server status
                     out.println("SERVER STATUS: ");
@@ -48,77 +54,7 @@ public class QueryServlet extends HttpServlet {
                     }
                     break;
 
-                case "o"://checkout
-                    //out.println("THIS IS A CHECKOUT<br>");
-                    try {
-                        String name = request.getParameter("name");
-                        String code = request.getParameter("code");
-                        String type = request.getParameter("type");
-                        /*out.println("name provided: " + name + "<br>");
-                            out.println("code provided: " + code + "<br>");
-                            out.println("type provided: " + type + "<br>");*/
-                        if (name.length() == 0 || code.length() == 0 || type.length() == 0) {
-                            out.println("ERROR: fill in required fields:<br>");
-                            if (name.length() == 0) {
-                                out.println("name<br>");
-                            }
-                            if (code.length() == 0) {
-                                out.println("code<br>");
-                            }
-                            if (type.length() == 0) {
-                                out.println("type<br>");
-                            }
-                        } else {
-                            out.println("checkout result:<br>" + IT.processCheckout(name, code, type) + "<br>");
-                        }
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                    }
-                break;
                 
-                case "t"://transfer
-                    try {
-                        String name = request.getParameter("name");
-                        String code = request.getParameter("code");
-                        String type = request.getParameter("type");
-                        if (name.length() == 0 || code.length() == 0 || type.length() == 0) {
-                            out.println("ERROR: fill in required fields:<br>");
-                            if (name.length() == 0) {
-                                out.println("name<br>");
-                            }
-                            if (code.length() == 0) {
-                                out.println("code<br>");
-                            }
-                            if (type.length() == 0) {
-                                out.println("type<br>");
-                            }
-                        } else {
-                            out.println("transfer result:<br>" + IT.processTransfer(name, code, type) + "<br>");
-                        }
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                    }
-                    break;
-                    
-                case "i"://check in
-                    try {
-                    String code = request.getParameter("code");
-                    String type = request.getParameter("type");
-                    if (code.length() == 0 || type.length() == 0) {
-                        out.println("ERROR: fill in required fields:<br>");
-                        if (code.length() == 0) {
-                            out.println("code<br>");
-                        }
-                        if (type.length() == 0) {
-                            out.println("type<br>");
-                        }
-                    } else {
-                        out.println("check in result:<br>" + IT.processCheckin(code, type) + "<br>");
-                    }
-                } catch (Exception e) {
-                    out.println(e.getMessage());
-                }
-                break;
                 
                 case "dg":
                     try {
@@ -131,9 +67,14 @@ public class QueryServlet extends HttpServlet {
                         String code = request.getParameter("code");
                         String type = request.getParameter("type");
                         String boxString = request.getParameter("showOnlyCheckedOutGear");
+                        String box2String = request.getParameter("showOnlyUsablePresentGear");
                         boolean showOnlyCheckedOutGear = Boolean.parseBoolean(boxString);
+                        boolean showOnlyUsablePresentGear = Boolean.parseBoolean(box2String);
                         if (showOnlyCheckedOutGear) {
                             gear = DT.purgeGearArrayByCheckedOut(gear);
+                        }
+                        if (showOnlyUsablePresentGear) {
+                            gear = DT.purgeGearArrayByUsablePresentGear(gear);
                         }
                         boolean chillin = true;
                         if (name.length() > 0) {
@@ -145,6 +86,15 @@ public class QueryServlet extends HttpServlet {
                                 gear = DT.purgeGearArrayByPerson(gear, p);
                             }
                         }
+                        if (code.length() > 0) {
+                            code = IT.processGearCode(code);
+                            gear = DT.purgeGearArrayByCode(gear, code);
+                        }
+                        if (type.length() > 0) {
+                            type = IT.processGearTypeCode(type);
+                            gear = DT.purgeGearArrayByType(gear, type);
+                        }
+                        /*
                         if (code.length() > 0 || type.length() > 0) {
                             if (code.length() > 0 && type.length() > 0) {
                                 code = IT.processGearCode(code);
@@ -155,8 +105,10 @@ public class QueryServlet extends HttpServlet {
                                 out.println("ERROR: if you put in gear code you also have to put in gear type (and vice versa)");
                             }
                         }
-
+                        */
+                        
                         if (chillin == true) {
+                            out.println("<p>number of items: " + gear.size() + "</p>");
                             out.println(RT.printGearArray(gear));
                         }
                     } catch (Exception e) {
@@ -227,38 +179,15 @@ public class QueryServlet extends HttpServlet {
                     }
                     break;
                     
-                case "map"://manage add people
-                    try {
-                        String name = request.getParameter("name");
-                        if (name.length() > 0) {
-                            out.println("management result:<br>" + FT.addPersonToDB(name) + "<br>");
-                        } else {
-                            out.println("ERROR: enter a name");
+                
+                case "pg"://preview gear
+                    try{
+                        String code = IT.processGearCode(request.getParameter("code"));
+                        String type = IT.processGearTypeCode(request.getParameter("type"));
+                        if (code == null) {
+                            out.println("VIPnsOIPJFPOIJSDF");
                         }
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                    }
-                    break;
-                    
-                case "mrp"://manage remove people
-                    try {
-                        String name = request.getParameter("name");
-                        if (name.length() > 0) {
-                            out.println("management result:<br>" + FT.removePersonFromDB(name) + "<br>");
-                        } else {
-                            out.println("ERROR: enter a name");
-                        }
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                    }
-                    break;
-                    
-                case "mag"://manage add gear
-                    try {
-                        String code = request.getParameter("code");
-                        String type = request.getParameter("type");
-                        String modelDescription = request.getParameter("modelDescription");
-                        if (code.length() == 0 || type.length() == 0 || modelDescription.length() == 0) {
+                        if (code.length() == 0 || type.length() == 0) {
                             out.println("ERROR: fill in required fields:<br>");
                             if (code.length() == 0) {
                                 out.println("code<br>");
@@ -266,11 +195,15 @@ public class QueryServlet extends HttpServlet {
                             if (type.length() == 0) {
                                 out.println("type<br>");
                             }
-                            if (modelDescription.length() == 0) {
-                                out.println("model description<br>");
-                            }
                         } else {
-                            out.println("management result:<br>" + IT.processNewGear(code, type, modelDescription) + "<br>");
+                            Gear g = DT.getGearByCodeAndType(IT.processGearCode(code), IT.processGearTypeCode(type));
+                            ArrayList<Gear> ga = new ArrayList<Gear>();
+                            if (g != null) {
+                                ga.add(g);
+                                out.println(RT.printGearArray(ga));
+                            } else {
+                                out.println("<p>ERROR: gear doesn't exist</p>");
+                            }
                         }
                     } catch (Exception e) {
                         out.println(e.getMessage());

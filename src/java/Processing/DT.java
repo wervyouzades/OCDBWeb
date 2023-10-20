@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.*;
 import java.util.*;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  *
@@ -47,7 +49,8 @@ public class DT {
         String peopleSQL = "SELECT * FROM people ORDER BY name;";
         String gearSQL = "SELECT * FROM gear ORDER BY gear_type_id, code;";
         String transactionsSQL = "SELECT * FROM transactions ORDER BY datetime DESC;";
-        try (//Connection conn = connect();
+        OCDB.connect();
+        try (
             Statement gearTypesSTMT = OCDB.conn.createStatement();
             Statement gearModelsSTMT = OCDB.conn.createStatement();
             Statement peopleSTMT = OCDB.conn.createStatement();
@@ -72,7 +75,8 @@ public class DT {
                 int gear_type_id = Integer.parseInt(gearModelsRS.getString("gear_type_id"));
                 String gear_model = gearModelsRS.getString("gear_model");
                 String description = gearModelsRS.getString("description");
-                Gear_Model temp = new Gear_Model(id, gear_type_id, gear_model, description);
+                String price = gearModelsRS.getString("price");
+                Gear_Model temp = new Gear_Model(id, gear_type_id, gear_model, description, price);
                 temp.updateLocalReferences();
                 gear_models.add(temp);
             }
@@ -93,7 +97,11 @@ public class DT {
                 String code = gearRS.getString("code");
                 int gear_type_id = Integer.parseInt(gearRS.getString("gear_type_id"));
                 int gear_model_id = Integer.parseInt(gearRS.getString("gear_model_id"));
-                Gear temp = new Gear(id, code, person_id, gear_type_id, gear_model_id);
+                String notes = gearRS.getString("notes");
+                if (notes == null) {
+                    notes = "";
+                }
+                Gear temp = new Gear(id, code, person_id, gear_type_id, gear_model_id, notes);
                 temp.updateLocalReferences();
                 gear.add(temp);
             }
@@ -103,6 +111,7 @@ public class DT {
                 int old_person_id = Integer.parseInt(transactionsRS.getString("old_person_id"));
                 int new_person_id = Integer.parseInt(transactionsRS.getString("new_person_id"));
                 String notes;
+                OffsetDateTime offsetdatetime = transactionsRS.getObject("datetime", OffsetDateTime.class);
                 try {
                     notes = transactionsRS.getString("notes");
                 } catch (Exception e) {
@@ -110,13 +119,15 @@ public class DT {
                 }
                 String date = transactionsRS.getString("date");
                 String datetime = transactionsRS.getString("datetime");
-                Transaction temp = new Transaction(id, gear_id, old_person_id, new_person_id, notes, date, datetime);
+                Transaction temp = new Transaction(id, gear_id, old_person_id, new_person_id, notes, date, datetime, offsetdatetime);
                 temp.updateLocalReferences();
                 transactions.add(temp);
             }
             
-            
+            OCDB.close();
+            populateLocalGearWithTransactions();
         } catch (SQLException ex) {
+            OCDB.close();
             System.out.println(ex.getMessage());
         }
     }
@@ -124,6 +135,13 @@ public class DT {
     public static Person getPersonByName(String name) {
         for (Person p : DT.people) {
             if (p.name.equalsIgnoreCase(name)) return p;
+        }
+        return null;
+    }
+    
+    public static Person getPersonById(int id) {
+        for (Person p : DT.people) {
+            if (p.id == id) return p;
         }
         return null;
     }
@@ -170,7 +188,7 @@ public class DT {
     
     public static Gear getGearById(int id) {
         for (Gear g : DT.gear) {
-            if (g.person.id == id) return g;
+            if (g.id == id) return g;
         }
         return null;
     }
@@ -184,9 +202,17 @@ public class DT {
         return null;
     }
     
+    
     public static Gear_Model getGearModelByDescription(String description) {
         for (Gear_Model gearModel : gear_models) {
             if (gearModel.description.equals(description)) return gearModel;
+        }
+        return null;
+    }
+    
+    public static Gear_Model getGearModelById(int id) {
+        for (Gear_Model gearModel : gear_models) {
+            if (gearModel.id == id) return gearModel;
         }
         return null;
     }
@@ -216,11 +242,51 @@ public class DT {
         return temp;
     }
     
+    public static ArrayList<Gear> purgeGearArrayByCode(ArrayList<Gear> gear, String gearCode) {
+        ArrayList<Gear> temp = new ArrayList<Gear>();
+        for (Gear g : gear) {
+            if (g.code.equalsIgnoreCase(gearCode)) {
+                temp.add(g);
+            }
+        }
+        return temp;
+    }
+    
+    public static ArrayList<Gear> purgeGearArrayByType(ArrayList<Gear> gear, String gearType) {
+        ArrayList<Gear> temp = new ArrayList<Gear>();
+        for (Gear g : gear) {
+            if (g.gear_type.code.equalsIgnoreCase(gearType)) {
+                temp.add(g);
+            }
+        }
+        return temp;
+    }
+    
     public static ArrayList<Gear> purgeGearArrayByCheckedOut(ArrayList<Gear> gear) {
         ArrayList<Gear> temp = new ArrayList<Gear>();
         for (Gear g : gear) {
             if (!g.person.name.equalsIgnoreCase(OCDB.checked_in)) {
                 temp.add(g);
+            }
+        }
+        return temp;
+    }
+    
+    public static ArrayList<Gear> purgeGearArrayByUsablePresentGear(ArrayList<Gear> gear) {
+        ArrayList<Gear> temp = new ArrayList<Gear>();
+        for (Gear g : gear) {
+            if (!g.person.name.equalsIgnoreCase(OCDB.missing) && !g.person.name.equalsIgnoreCase(OCDB.unusable)) {
+                temp.add(g);
+            }
+        }
+        return temp;
+    }
+    
+    public static ArrayList<Gear_Model> purgeGearModelArrayByType(ArrayList<Gear_Model> gear_models, Gear_Type gear_type) {
+        ArrayList<Gear_Model> temp = new ArrayList<Gear_Model>();
+        for (Gear_Model gm : gear_models) {
+            if (gm.gear_type.id == gear_type.id) {
+                temp.add(gm);
             }
         }
         return temp;
@@ -251,6 +317,33 @@ public class DT {
         return temp;
     }
     
+    public static void populateLocalGearWithTransactions() {
+        for (Gear g : gear) {
+            g.transactions = new ArrayList<Transaction>();
+        }
+        for (Transaction t : transactions) {
+            try {
+            getGearById(t.gear_id).transactions.add(t);
+            } catch (Exception e) {
+                
+            }
+        }
+    }
+    
+    public static OffsetDateTime getLastTransactionDateTimeByGear(Gear gear) {
+        OffsetDateTime sample = OffsetDateTime.parse("1900-01-01T00:00:00+00:00");
+        Transaction temp = new Transaction(-1, -1, -1, -1, "", "", "", sample);
+        for (Transaction t : gear.transactions) {
+            if (t.offsetdatetime != null && t.offsetdatetime.compareTo(temp.offsetdatetime) > 0) {
+                temp = t;
+            }
+        }
+        if (temp.offsetdatetime != null && temp.offsetdatetime.compareTo(sample) > 0) {
+            return temp.offsetdatetime;
+        } else {
+            return null;
+        }
+    }
 
 
     

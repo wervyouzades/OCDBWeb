@@ -3,16 +3,25 @@
     <head>
         <title>Outdoors Club Gear Management</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
     </head>
     <body>
+    <div id="header-container"></div>
         <p>
-            <a href ="checkout.html">checkout</a> 
+            <a href ="transaction/checkout.html">checkout</a> 
         </p>
         <p>
-            <a href ="checkin.html">check in</a> 
+            <a href ="transaction/checkin.html">check in</a> 
         </p>
         <p>
             <a href ="display.html">display data</a>
+        </p>
+        <p>
+            <a href ="./admin/">admin tools</a>
         </p>
         <button type="button" id="check">check server status</button>
         <div id="result"></div>

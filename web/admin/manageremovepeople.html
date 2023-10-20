@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add People</title>
+    <title>Remove People</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
 </head>
 <body>
-    <p>
-        <a href="checkout.html">checkout</a>
-        <a href="checkout.html">check in</a>
-        <a href="display.html">display</a>
-    </p>
+    <script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+  }
+</script>
+    <!--<iframe src="../../OCDBWeb/header.html"  frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>-->
+    <div id="header-container"></div>
+
     <form>
-        <p>Add people</p>
+        <p>Remove people</p>
         <p>
             <label for="name">Name:</label>
             <input type="text" id="name" placeholder="ex. sebastian desouza">
@@ -22,7 +30,7 @@
     <script>
         $("#submit").click(function() {
             var data = {
-                qtype: "MAP",
+                qtype: "MRP",
                 name: $("#name").val()
             };
             $.get("query", data, function(data) {

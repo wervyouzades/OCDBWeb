@@ -15,13 +15,24 @@ public class Gear_Model extends Item {
     public String gear_model;
     public String description;
     public Gear_Type gear_type;
+    public String price;
     public Gear_Model(int id, int gear_type_id, String gear_model, String description) {
         this.id = id;
         this.gear_type_id = gear_type_id;
         this.gear_model = gear_model;
         this.description = description;
         //updateReferences();
+    } 
+    
+    public Gear_Model(int id, int gear_type_id, String gear_model, String description, String price) {
+        this.id = id;
+        this.gear_type_id = gear_type_id;
+        this.gear_model = gear_model;
+        this.description = description;
+        this.price = price;
+        //updateReferences();
     }
+    
     
 
     public void updateReferences() {

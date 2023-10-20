@@ -104,8 +104,10 @@ public class FT {
         if (DT.getPersonByName(name) == null) {
             String SQL = "INSERT INTO people (name) VALUES ('" + name + "');";
             try {
+                OCDB.connect();
                 Statement stmt = OCDB.conn.createStatement();
                 stmt.executeQuery(SQL);
+                OCDB.close();
             } catch (SQLException ex) {
                 if (!ex.getMessage().equals("No results were returned by the query.")){
                     return ex.getMessage();
@@ -124,8 +126,10 @@ public class FT {
         } else {
             String SQL = "DELETE FROM people WHERE id = " + person.id + ";";
             try {
+                OCDB.connect();
                 Statement stmt = OCDB.conn.createStatement();
                 stmt.executeQuery(SQL);
+                OCDB.close();
             } catch (SQLException ex) {
                 if (!ex.getMessage().equals("No results were returned by the query.")){
                     return ex.getMessage();
@@ -150,8 +154,10 @@ public class FT {
                 String SQL = "INSERT INTO gear (code, person_id, gear_type_id, gear_model_id) VALUES ("
                         + code + ", " + ptemp.id + ", " + ttemp.id + ", " + mtemp.id + ");";
                 try {
+                    OCDB.connect();
                     Statement stmt = OCDB.conn.createStatement();
                     stmt.executeQuery(SQL);
+                    OCDB.close();
                 } catch (SQLException ex) {
                     if (!ex.getMessage().equals("No results were returned by the query.")){
                         return ex.getMessage();
@@ -161,12 +167,28 @@ public class FT {
             }   
         }
     }
+    
+    public static String editGear(int id, int gearModelId, String notes) {
+        String SQL = "UPDATE gear SET gear_model_id = " + gearModelId + ", notes = '" + notes + "' where id = " + id + ";";
+        try {
+            OCDB.connect();
+            Statement stmt = OCDB.conn.createStatement();
+            stmt.executeQuery(SQL);
+            OCDB.close();
+        } catch (SQLException ex) {
+            if (!ex.getMessage().equals("No results were returned by the query.")){
+                return ex.getMessage();
+            }
+        }
+        return "successfully edited gear IID" + id;
+    }
 
     public static void query() {//barebones
         String SQL = "";
         try (//Connection conn = connect();
                  Statement stmt = OCDB.conn.createStatement();  ResultSet rs = stmt.executeQuery(SQL);) {
 
+                OCDB.close();
         } catch (SQLException ex) {
             //System.out.println(ex.getMessage());
         }

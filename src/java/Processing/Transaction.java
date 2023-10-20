@@ -4,6 +4,7 @@
  */
 package Processing;
 import java.util.*;
+import java.time.OffsetDateTime;
 /**
  *
  * @author Wervy Ouzades
@@ -19,6 +20,7 @@ public class Transaction extends Item {
     public Gear gear;
     public Person old_person;
     public Person new_person;
+    public OffsetDateTime offsetdatetime;
     public Transaction(int id, int gear_id, int old_person_id, int new_person_id, String notes, String date, String datetime){
         this.id = id;
         this.gear_id = gear_id;
@@ -29,6 +31,18 @@ public class Transaction extends Item {
         this.datetime = datetime;
         //updateReferences();
     }
+    public Transaction(int id, int gear_id, int old_person_id, int new_person_id, String notes, String date, String datetime, OffsetDateTime offsetdatetime){
+        this.id = id;
+        this.gear_id = gear_id;
+        this.old_person_id = old_person_id;
+        this.new_person_id = new_person_id;
+        this.notes = notes;
+        this.date = date;
+        this.datetime = datetime;
+        this.offsetdatetime = offsetdatetime;
+        //updateReferences();
+    }
+    
     public void updateReferences() {
         gear = Gear.populate(gear_id);
         gear.updateReferences();

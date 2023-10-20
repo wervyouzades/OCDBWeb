@@ -86,6 +86,17 @@ public class IT {
         }
     }
     
+    public static String processEditGear(int id, int gearModelId, String notes) {
+        if (DT.getGearById(id) != null && DT.getGearModelById(gearModelId) != null) {
+            return FT.editGear(id, gearModelId, notes);
+        } else {
+            return "ERROR: parameters don't match objects in database\n" +
+                    id + "\n" +
+                    DT.getGearById(id) + "\n" + 
+                    DT.getGearModelById(gearModelId);
+        }
+    }
+    
     public static String processNewGear(String code, String type, String modelDescription) {
         OCDB.connect();
         String pcode = processGearCode(code);
@@ -100,7 +111,10 @@ public class IT {
     }
     
     public static String processGearTypeCode(String code) {
-        return code.substring(0, 1).toUpperCase();
+        if (code.length() > 0)
+            return code.substring(0, 1).toUpperCase();
+        else
+            return "";
     }
     
     public static String inputGearCode() {

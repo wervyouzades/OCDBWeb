@@ -12,14 +12,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <style>table, tr, td {
             border: 1px solid;
         }</style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
     </head>
     <body>
-    <p>
-        <a href="checkout.html">checkout</a>
-        <a href="checkout.html">check in</a>
-        <a href="display.html">display</a>
-    </p>
+    <div id="header-container"></div>
     <form>
         <p>Display transactions (blank fields will be ignored)</p>
         <p>
