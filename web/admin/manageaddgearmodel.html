@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Gear</title>
+    <title>Add Gear Model</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       $(document).ready(function () {
@@ -13,36 +13,35 @@
 <body>
     <div id="header-container"></div>
     <form>
-        <p>Add gear</p>
-        <p>
-            <label for="code">Gear Code:</label>
-            <input type="text" id="code" placeholder="ex. 3, CA3">
-        </p>
+        <p>Add gear model</p>
+        <p>General format: [brand] [model] - [spec]: [value] - [spec]: [value]...</p>
         <p>
             <label for="type">Gear Type:</label>
             <input type="text" id="type" placeholder="ex. w (for waterproof compression sack)">
         </p>
-        <div id="gearModelDropdown"></div>
-        <script>
-            $(document).ready(function() {
-            var data = {
-                qtype: "DD"
-            };
-            $.get("query", data, function(data) {
-                $("#gearModelDropdown").html(data);    
-            });
-        });
-        </script>
+        <p>
+            <label for="model">Gear Model:</label>
+            <input type="text" id="model" placeholder="ex. REI Polar Pod">
+        </p>
+        <p>
+            <label for="modelDescription">Gear Model Description:</label>
+            <input type="text" id="modelDescription" placeholder="ex. REI Polar Pod – Fill: Synth – Size: Reg Temp: 26 – Weight: 3.44 lb – Length: 72”">
+        </p>
+        <p>
+            <label for="price">Price</label>
+            <input type="text" id="price" placeholder="ex. 200">
+        </p>
         <button type="button" id="submit">Submit</button>
     </form>
     <div id="result"></div>
     <script>
         $("#submit").click(function() {
             var data = {
-                qtype: "MAG",
-                code: $("#code").val(),
+                qtype: "MAGM",
                 type: $("#type").val(),
-                modelIID: $("#gear_models").val()
+                model: $("#model").val(),
+                modelDescription: $("#modelDescription").val(),
+                price: $("#price").val()
             };
             $.get("query", data, function(data) {
                 $("#result").html(data);

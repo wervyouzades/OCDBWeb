@@ -101,16 +101,17 @@ public class GearServlet extends HttpServlet {
                                     out.println("<p>Edited gear preview:");
                                     try {
                                         String test = request.getParameter("gear_model");
-                                            out.println(test);
+                                            //out.println(test);
                                         int tempGearModelID = Integer.parseInt(request.getParameter("gear_model"));
-                                            out.println(tempGearModelID);
+                                            //out.println(tempGearModelID);
                                         Gear_Model tempGearModel = DT.getGearModelById(tempGearModelID);
-                                            out.println(tempGearModel);
+                                            //out.println(tempGearModel);
                                         int checkedInID = DT.getPersonByName(OCDB.checked_in).id;
                                         String notes = request.getParameter("notes");
-                                        out.println(checkedInID);
-                                        out.println(tempGearModel.gear_type.id);
-                                        out.println(tempGearModel.id);
+                                        if (notes == null) notes = "";
+                                        //out.println(checkedInID);
+                                        //out.println(tempGearModel.gear_type.id);
+                                        //out.println(tempGearModel.id);
                                         Gear tempGear;
                                         //try {
                                             tempGear = new Gear(-1, "PREVIEW", checkedInID, tempGearModel.gear_type.id, tempGearModel.id, notes);
@@ -118,7 +119,7 @@ public class GearServlet extends HttpServlet {
                                             //out.println(e);
                                         //}
                                         tempGear.updateLocalReferences();
-                                        out.println(tempGear);
+                                        //out.println(tempGear);
                                         ArrayList<Gear> tempGearArray = new ArrayList<Gear>();
                                         tempGearArray.add(tempGear);
                                         out.println(RT.printGearArray(tempGearArray));
@@ -132,14 +133,15 @@ public class GearServlet extends HttpServlet {
                                         String test = request.getParameter("gear_model");
                                             out.println(test);
                                         int tempGearModelID = Integer.parseInt(request.getParameter("gear_model"));
-                                            out.println(tempGearModelID);
+                                            //out.println(tempGearModelID);
                                         Gear_Model tempGearModel = DT.getGearModelById(tempGearModelID);
-                                            out.println(tempGearModel);
+                                            //out.println(tempGearModel);
                                         int checkedInID = DT.getPersonByName(OCDB.checked_in).id;
                                         String notes = request.getParameter("notes");
-                                        out.println(checkedInID);
-                                        out.println(tempGearModel.gear_type.id);
-                                        out.println(tempGearModel.id);
+                                        if (notes == null) notes = "";
+                                        //out.println(checkedInID);
+                                        //out.println(tempGearModel.gear_type.id);
+                                        //out.println(tempGearModel.id);
                                         out.println("<p>" + IT.processEditGear(iid, tempGearModel.id, notes) + "</p>");
                                     } catch (Exception e) {
                                         out.println("<p>Data inputted is invalid</p>");

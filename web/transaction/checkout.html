@@ -14,6 +14,7 @@
         <style>table, tr, td {
             border: 1px solid;
         }</style>
+        <link rel="icon" type="image/x-icon" href="https://allatoms.com/ocdb/icon.ico">
 </head>
 <body>
     <div id="header-container"></div>
@@ -28,6 +29,10 @@
             W	Waterproof Compression Sack <br>
             N	Non-Waterproof Compression Sack <br>
             F   Food/Stuff Sacks <br>
+        </p>
+        <p>
+            <label for="notes">Notes:</label>
+            <input type="text" id="notes">
         </p>
         <p>
             <label for="name">Name:</label>
@@ -50,7 +55,8 @@
                 qtype: "O",
                 name: $("#name").val(),
                 code: $("#code").val(),
-                type: $("#type").val()
+                type: $("#type").val(),
+                notes: $("#notes").val()
             };
             $.get("query", data, function(data) {
                 $("#result").html(data);

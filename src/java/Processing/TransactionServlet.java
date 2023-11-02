@@ -49,6 +49,12 @@ public class TransactionServlet extends HttpServlet {
                         String name = request.getParameter("name");
                         String code = request.getParameter("code");
                         String type = request.getParameter("type");
+                        String notes = request.getParameter("notes");
+                        if (notes == null || notes.length() == 0) {
+                            notes = username;
+                        } else {
+                            notes = username + "; " + notes;
+                        }
                         /*out.println("name provided: " + name + "<br>");
                             out.println("code provided: " + code + "<br>");
                             out.println("type provided: " + type + "<br>");*/
@@ -65,7 +71,7 @@ public class TransactionServlet extends HttpServlet {
                             }
                         } else {
 
-                            out.println("checkout result:<br>" + IT.processCheckout(name, code, type) + "<br>");
+                            out.println("checkout result:<br>" + IT.processCheckout(name, code, type, notes) + "<br>");
                         }
                     } catch (Exception e) {
                         out.println(e.getMessage());
@@ -77,6 +83,12 @@ public class TransactionServlet extends HttpServlet {
                         String name = request.getParameter("name");
                         String code = request.getParameter("code");
                         String type = request.getParameter("type");
+                        String notes = request.getParameter("notes");
+                        if (notes == null || notes.length() == 0) {
+                            notes = username;
+                        } else {
+                            notes = username + "; " + notes;
+                        }
                         if (name.length() == 0 || code.length() == 0 || type.length() == 0) {
                             out.println("ERROR: fill in required fields:<br>");
                             if (name.length() == 0) {
@@ -89,7 +101,7 @@ public class TransactionServlet extends HttpServlet {
                                 out.println("type<br>");
                             }
                         } else {
-                            out.println("transfer result:<br>" + IT.processTransfer(name, code, type) + "<br>");
+                            out.println("transfer result:<br>" + IT.processTransfer(name, code, type, notes) + "<br>");
                         }
                     } catch (Exception e) {
                         out.println(e.getMessage());
@@ -98,24 +110,30 @@ public class TransactionServlet extends HttpServlet {
                     
                 case "i"://check in
                     try {
-                    String code = request.getParameter("code");
-                    String type = request.getParameter("type");
-                    if (code.length() == 0 || type.length() == 0) {
-                        out.println("ERROR: fill in required fields:<br>");
-                        if (code.length() == 0) {
-                            out.println("code<br>");
+                        String code = request.getParameter("code");
+                        String type = request.getParameter("type");
+                        String notes = request.getParameter("notes");
+                        if (notes == null || notes.length() == 0) {
+                            notes = username;
+                        } else {
+                            notes = username + "; " + notes;
                         }
-                        if (type.length() == 0) {
-                            out.println("type<br>");
+                        if (code.length() == 0 || type.length() == 0) {
+                            out.println("ERROR: fill in required fields:<br>");
+                            if (code.length() == 0) {
+                                out.println("code<br>");
+                            }
+                            if (type.length() == 0) {
+                                out.println("type<br>");
+                            }
+                        } else {
+                            out.println("check in result:<br>" + IT.processCheckin(code, type, notes) + "<br>");
                         }
-                    } else {
-                        out.println("check in result:<br>" + IT.processCheckin(code, type) + "<br>");
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
                     }
-                } catch (Exception e) {
-                    out.println(e.getMessage());
-                }
-                break;
-                
+                    break;
+                    
                 case "pg"://preview gear
                     try{
                         String code = IT.processGearCode(request.getParameter("code"));

@@ -34,6 +34,14 @@ public class AdminServlet extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             DT.populateLocalDB();
             switch(request.getParameter("qtype").toLowerCase()) {
+                case "dd":
+                    try {
+                        out.println(RT.printGearModelDropDown(DT.gear_models));
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                    break;
+                
                 case "map"://manage add people
                     try {
                         String name = request.getParameter("name");
@@ -48,7 +56,7 @@ public class AdminServlet extends HttpServlet {
                     break;
                     
                 case "mrp"://manage remove people
-                    try {
+                    /*try {
                         String name = request.getParameter("name");
                         //out.println(RT.printGearArray(DT.gear));
                         if (name.length() > 0) {
@@ -58,15 +66,16 @@ public class AdminServlet extends HttpServlet {
                         }
                     } catch (Exception e) {
                         out.println(e.getMessage());
-                    }
+                    }*/
+                    out.println("please dont do this");
                     break;
                     
                 case "mag"://manage add gear
                     try {
                         String code = request.getParameter("code");
                         String type = request.getParameter("type");
-                        String modelDescription = request.getParameter("modelDescription");
-                        if (code.length() == 0 || type.length() == 0 || modelDescription.length() == 0) {
+                        String modelIID = request.getParameter("modelIID");
+                        if (code.length() == 0 || type.length() == 0 || modelIID.length() == 0) {
                             out.println("ERROR: fill in required fields:<br>");
                             if (code.length() == 0) {
                                 out.println("code<br>");
@@ -74,16 +83,50 @@ public class AdminServlet extends HttpServlet {
                             if (type.length() == 0) {
                                 out.println("type<br>");
                             }
-                            if (modelDescription.length() == 0) {
-                                out.println("model description<br>");
+                            if (modelIID.length() == 0) {
+                                out.println("model IID<br>");
                             }
                         } else {
                             code = IT.processGearCode(code);
                             type = IT.processGearTypeCode(type);
-                            out.println("management result:<br>" + IT.processNewGear(code, type, modelDescription) + "<br>");
+                            int intModelIID = Integer.parseInt(modelIID);
+                            if (intModelIID >= 0) {
+                                out.println("management result:<br>" + IT.processNewGear(code, type, intModelIID) + "<br>");
+                            } else {
+                                out.println("ERROR: invalid gear model IID");
+                            }
                         }
                     } catch (Exception e) {
                         out.println(e.getMessage());
+                    }
+                    break;
+                    
+                case "magm"://manage add gear model
+                    try {
+                        String type = request.getParameter("type");
+                        String model = request.getParameter("model");
+                        String modelDescription = request.getParameter("modelDescription");
+                        String price = request.getParameter("price");
+                        if (type.length() == 0 || model.length() == 0 || modelDescription.length() == 0 || price.length() == 0) {
+                            out.println("ERROR: fill in requred fields:<br>");
+                            if (type.length() == 0 ) {
+                                out.println("type<br>");
+                            }
+                            if (model.length() == 0 ) {
+                                out.println("model<br>");
+                            }
+                            if (modelDescription.length() == 0 ) {
+                                out.println("model description<br>");
+                            }
+                            if (price.length() == 0 ) {
+                                out.println("price");
+                            }
+                        } else {
+                            type = IT.processGearTypeCode(type);
+                            out.println("management result:<br>" + IT.processNewGearModel(type, model, modelDescription, price));
+                        }
+                    } catch (Exception e) {
+                        out.println(e);
                     }
                     break;
                 default:

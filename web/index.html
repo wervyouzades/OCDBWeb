@@ -3,14 +3,27 @@
     <head>
         <title>Outdoors Club Gear Management</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      $(document).ready(function () {
-        $("#header-container").load("../../OCDBWeb/header.html");
-      });
-    </script>
+        <script>
+          $(document).ready(function () {
+            $("#header-container").load("../../OCDBWeb/header.html");
+          });
+        </script>
+        <link rel="icon" type="image/x-icon" href="https://allatoms.com/ocdb/icon.ico">
     </head>
     <body>
-    <div id="header-container"></div>
+        <div id="header-container"></div>
+        <div id="serverCheck"></div>
+        <script>
+            $(document).ready(function() {
+                const url = new URL(window.location.toLocaleString());
+                var data = {
+                    qtype: "SC"
+                };
+                $.get("query", data, function(data) {
+                    $("#serverCheck").html(data);
+                }); 
+            });
+        </script>
         <p>
             <a href ="transaction/checkout.html">checkout</a> 
         </p>

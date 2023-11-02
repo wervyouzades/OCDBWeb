@@ -19,15 +19,22 @@ import java.io.PrintWriter;
  */
 public class OCDB {
     /*
-    private static String url = "jdbc:postgresql://localhost:5432/ocdb";
+    private static String url = "jdbc:postgresql://localhost:5432/aserfasv";
     private static String user = "postgres";
     private static String password = "Ballstate1";
+    public static String server = "TEST SERVER (data is NOT accurate)";
     */
     ///*
     private static String url = "jdbc:postgresql://jelani.db.elephantsql.com:5432/gmsebrgp";
     private static String user = "gmsebrgp";
     private static String password = "jNkiSX6nbIJ_X_DgsZteyps4zkSEYOPF";
+    public static String server = "Normal server; ElephantSQL";
     //*/
+    /*
+    private static String url = "jdbc:postgresql://136.56.2.100:36/aserfasv";
+    private static String user = "postgres";
+    private static String password = "Ballstate1";
+    */
     
     
     public static Connection conn;
@@ -58,6 +65,42 @@ public class OCDB {
         //System.out.println("ael");
         //QT.printGearByName("GEAR_CLOSET");
     }*/
+    
+    
+    /*public String css = "body {font-family: Verdana; font-size: 10pt; font-style: normal; line-height: normal; font-weight: normal; color:#b2b2b2; text-decoration: none; background-color:#000000}\n" +
+"\n" +
+"p {font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: normal; font-weight: normal; color: #b2b2b2; text-decoration: none}\n" +
+"p.small {font-family: Verdana, MS Sans Serif, Arial; font-size: 10pt; font-style: normal; line-height: normal; font-weight: normal; color: #b2b2b2; text-decoration: none}\n" +
+"p.purple {font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: normal; font-weight: normal; color: #BEA8D0; text-decoration: none}\n" +
+"\n" +
+"table {font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: normal; font-weight: normal; color: #b2b2b2; text-decoration: none}\n" +
+"\n" +
+"A:link {color: #ffffff; text-decoration: underline; font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-weight: normal}\n" +
+"A:active {color: #FF0000; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-weight: normal}\n" +
+"A:visited {color: #999999; text-decoration: underline; font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-weight: normal}\n" +
+"A:hover {background:#63437C; color: #ffffff; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-weight: normal}\n" +
+"\n" +
+"A.small:link {color: #b2b2b2; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 9pt; font-weight: normal}\n" +
+"A.small:active {color: #FF0000; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 9pt; font-weight: normal}\n" +
+"A.small:visited {color: #b2b2b2; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 9pt; font-weight: normal}\n" +
+"A.small:hover {background:#63437C; color: #ffffff; text-decoration: none; font-family: Verdana, MS Sans Serif, Arial; font-size: 9pt; font-weight: normal}\n" +
+"\n" +
+"strong {font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: normal; font-weight: bold; color: #b2b2b2; text-decoration: none}\n" +
+"\n" +
+"font {font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: normal; color: #b2b2b2; font-weight: normal; text-decoration: none}\n" +
+"\n" +
+"h1 {background:#63437C; margin: 2; text-align:center; font-family: Arial Black, Arial, Verdana; font-size: 12pt; font-style: normal; line-height: 24pt; font-weight: normal; color:#ffffff; text-decoration: none}\n" +
+"h2 {text-align:center; font-family: Verdana, MS Sans Serif, Arial; font-size: 12pt; font-style: normal; line-height: 14pt; font-weight: normal; color: #b2b2b2; text-decoration: none}\n" +
+"h3 {background:#63437C; margin: 2; text-align:center; font-family: Arial, Verdana; font-size: 12pt; font-style: normal; line-height: 14pt; font-weight: normal; color:#ffffff; text-decoration: none}\n" +
+"h4 {text-align:left; font-family: Verdana, MS Sans Serif, Arial; font-size: 12pt; font-style: normal; line-height: 14pt; font-weight: normal; color: #b2b2b2; text-decoration: none}\n" +
+"h6 {background:#63437C; margin: 2; text-align:left; font-family: Verdana, MS Sans Serif, Arial; font-size: 11pt; font-style: normal; line-height: 14pt; font-weight: normal; color:#ffffff; text-decoration: none}\n" +
+"\n" +
+"ul {color: #b2b2b2; line-height: 16pt; text-color: #b2b2b2; font-weight: normal; font-family: Verdana, MS Sans Serif, Arial;font-size: 11pt;}\n" +
+"ul.loose {color: #b2b2b2; line-height: 23pt; text-color: #b2b2b2; font-weight: normal; font-family: Verdana, MS Sans Serif, Arial;}\n" +
+"ul.small {color: #b2b2b2; line-height: 11pt; font-size: 10pt; text-color: #b2b2b2; font-weight: normal; font-family: Verdana, MS Sans Serif, Arial;}\n" +
+"ol {color: #b2b2b2; line-height: 16pt; text-color: #b2b2b2; font-weight: normal; font-family: Verdana, MS Sans Serif, Arial;}"*/
+    
+    
     
     public static boolean checkServerStatus() {
         connect();

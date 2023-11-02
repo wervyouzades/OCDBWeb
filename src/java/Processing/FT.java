@@ -13,17 +13,18 @@ import java.sql.*;
  */
 public class FT {
 
-    public static void addTransactionToDB(Gear gear, Person old_person, Person new_person) {//doesn't include notes
+    public static String addTransactionToDB(Gear gear, Person old_person, Person new_person) {//doesn't include notes
         if (gear.person.id != new_person.id) {
             String SQL1 = "INSERT INTO transactions (gear_id, old_person_id, new_person_id) VALUES (" + gear.id + ", " + old_person.id + ", " + new_person.id + ");";
             String SQL2 = "UPDATE gear SET person_id = " + new_person.id + " WHERE id = " + gear.id + ";";
+            String temp = "";
             try {
                      Statement stmt1 = OCDB.conn.createStatement();  
                      stmt1.executeQuery(SQL1);
                 //DT.populateLocalDB();
             } catch (SQLException ex) {
                 if (!ex.getMessage().equals("No results were returned by the query.")){
-                    //System.out.println(ex.getMessage());
+                    temp += ex.getMessage() + "\n";
                 }
             }
             try {
@@ -32,18 +33,48 @@ public class FT {
                 DT.populateLocalDB();
             } catch (SQLException ex) {
                 if (!ex.getMessage().equals("No results were returned by the query.")){
-                    //System.out.println(ex.getMessage());
+                    temp += ex.getMessage() + "\n";;
                 }
             }
+            return temp;
         } else {
-            //System.out.println("GEAR ALREADY IN " + new_person.name + "'s POSSESSION");
+            return "GEAR ALREADY IN " + new_person.name + "'s POSSESSION";
+        }
+    }
+    
+    public static String addTransactionToDB(Gear gear, Person old_person, Person new_person, String notes) {
+        if (gear.person.id != new_person.id) {
+            String SQL1 = "INSERT INTO transactions (gear_id, old_person_id, new_person_id, notes) VALUES (" + gear.id + ", " + old_person.id + ", " + new_person.id + ", '" + notes + "');";
+            String SQL2 = "UPDATE gear SET person_id = " + new_person.id + " WHERE id = " + gear.id + ";";
+            String temp = "";
+            try {
+                     Statement stmt1 = OCDB.conn.createStatement();  
+                     stmt1.executeQuery(SQL1);
+                //DT.populateLocalDB();
+            } catch (SQLException ex) {
+                if (!ex.getMessage().equals("No results were returned by the query.")){
+                    temp += ex.getMessage() + "\n";
+                }
+            }
+            try {
+                    Statement stmt2 = OCDB.conn.createStatement();  
+                    stmt2.executeQuery(SQL2);
+                DT.populateLocalDB();
+            } catch (SQLException ex) {
+                if (!ex.getMessage().equals("No results were returned by the query.")){
+                    temp += ex.getMessage() + "\n";
+                }
+            }
+            return temp;
+        } else {
+            return ("GEAR ALREADY IN " + new_person.name + "'s POSSESSION");
         }
     }
 
     public static String checkoutGear(Gear gear, Person person) {
         if (gear.person.name.equals(OCDB.checked_in)) {
             try {
-                FT.addTransactionToDB(gear, gear.person, person);
+                String result = FT.addTransactionToDB(gear, gear.person, person);
                 return "successfully checked out "
                         + gear.gear_type.name + " CA" + gear.code + " to " + person.name;
             } catch (Exception e) {
@@ -72,11 +103,58 @@ public class FT {
         }
     }
     
+    public static String checkoutGear(Gear gear, Person person, String notes) {
+        if (gear.person.name.equals(OCDB.checked_in)) {
+            try {
+                String temp = FT.addTransactionToDB(gear, gear.person, person, notes);
+                return "successfully checked out "
+                        + gear.gear_type.name + " CA" + gear.code + " to " + person.name  + 
+                        "\n" + temp;
+            } catch (Exception e) {
+                return "failure: " + e.getMessage();
+            }
+        } else {
+            return "gear already checked out<br>"
+                    + "transfer gear from " + gear.person.name + " to " + person.name + "?<br>"
+                    + "<button type=\"button\" id=\"transfer\">Transfer</button>"
+                    + "    <div id=\"result2\"></div>"
+                    + "    <script>\n" +
+"        $(\"#transfer\").click(function() {\n" +
+"            var data = {\n" +
+"                qtype: \"T\",\n" +
+"                name: $(\"#name\").val(),\n" +
+"                code: $(\"#code\").val(),\n" +
+"                type: $(\"#type\").val(),\n" +
+"                notes: $(\"#notes\").val()\n" +
+"            };\n" +
+"            $.get(\"query\", data, function(data) {\n" +
+"                $(\"#result2\").html(data);\n" +
+"            });\n" +
+"        });\n" +
+"    </script>";
+//            FT.addTransactionToDB(gear, gear.person, person);
+                
+        }
+    }
+    
     public static String transferGear(Gear gear, Person person) {
         if (!gear.person.name.equals(OCDB.checked_in)) {
             try {
                 FT.addTransactionToDB(gear, gear.person, person);
                 return "success";
+            }  catch (Exception e) {
+                return "failure: " + e.getMessage();
+            }
+        } else {
+            return "ERROR: either something got externally updated or sebastian screwed up";
+        }
+    }
+    
+    public static String transferGear(Gear gear, Person person, String notes) {
+        if (!gear.person.name.equals(OCDB.checked_in)) {
+            try {
+                String temp = FT.addTransactionToDB(gear, gear.person, person, notes);
+                return "success" + "\n" + temp;                
             }  catch (Exception e) {
                 return "failure: " + e.getMessage();
             }
@@ -91,6 +169,22 @@ public class FT {
                 FT.addTransactionToDB(gear, gear.person, DT.getPersonByName(OCDB.checked_in));
                 return "successfully checked in "
                         + gear.gear_type.name + " CA" + gear.code + " from " + gear.person.name;
+            } catch (Exception e) {
+                return "failure: " + e.getMessage();
+            }
+        } else {
+            return "ERROR: gear already checked in";
+            //System.out.println("Gear already checked in");
+        }
+    }
+    
+    public static String checkinGear(Gear gear, String notes) {
+        if (!gear.person.name.equals(OCDB.checked_in)) {
+            try {
+                String temp = FT.addTransactionToDB(gear, gear.person, DT.getPersonByName(OCDB.checked_in), notes);
+                return "successfully checked in "
+                        + gear.gear_type.name + " CA" + gear.code + " from " + gear.person.name +
+                        "\n" + temp;
             } catch (Exception e) {
                 return "failure: " + e.getMessage();
             }
@@ -139,13 +233,13 @@ public class FT {
         }
     }
     
-    public static String addGearToDB(String code, String type, String modelDescription) {
+    public static String addGearToDB(String code, String type, int modelIID) {
         if (DT.getGearByCodeAndType(code, type) != null)
             return "ERROR: gear already exists";
         else {
             Person ptemp = DT.getPersonByName(OCDB.checked_in);
             Gear_Type ttemp = DT.getGearTypeByCode(type);
-            Gear_Model mtemp = DT.getGearModelByDescription(modelDescription);
+            Gear_Model mtemp = DT.getGearModelById(modelIID);
             if (mtemp == null)
                 return "ERROR: gear model doesn't exist in database";
             else if (ttemp == null) 
@@ -166,6 +260,30 @@ public class FT {
                 return "successfully added gear " + ttemp.name + " CA" + code + " to database";
             }   
         }
+    }
+    
+    public static String addGearModelToDB(String type, String model, String modelDescription, String price) {
+        if (DT.getGearTypeByCode(type) == null) {
+            return "ERROR: gear type doesn't exist";
+        }
+        Gear_Model check = DT.getGearModelByDescription(modelDescription);
+        if (check != null) {
+            return "ERROR: gear model already exists";
+        }
+        Gear_Type ttemp = DT.getGearTypeByCode(type);
+        String SQL = "INSERT INTO gear_models (gear_type_id, gear_model, description, price) VALUES ("
+                + ttemp.id + ", '" + model + "', '" + modelDescription + "', '" + price + "');";
+        try {
+            OCDB.connect();
+            Statement stmt = OCDB.conn.createStatement();
+            stmt.executeQuery(SQL);
+            OCDB.close();
+        } catch (SQLException ex) {
+            if (!ex.getMessage().equals("No results were returned by the query.")){
+                return ex.getMessage();
+            }
+        }
+        return "successfully added gear model\n" + modelDescription + "\nto database";
     }
     
     public static String editGear(int id, int gearModelId, String notes) {

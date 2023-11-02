@@ -52,6 +52,16 @@ public class IT {
         if (tempPerson == null) return "ERROR: person doesn't exist or isn't in database";
         return FT.checkoutGear(temp, tempPerson);
         
+    }
+    
+    public static String processCheckout(String name, String code, String type, String notes) {
+        OCDB.connect();
+        Gear temp = DT.getGearByCodeAndType(processGearCode(code), processGearTypeCode(type));
+        if (temp == null) return "ERROR: gear doesn't exist or isn't in database";
+        Person tempPerson = DT.getPersonByName(name);
+        if (tempPerson == null) return "ERROR: person doesn't exist or isn't in database";
+        return FT.checkoutGear(temp, tempPerson, notes);
+        
     }  
     
     public static String processTransfer(String name, String code, String type) {
@@ -63,11 +73,27 @@ public class IT {
         return FT.transferGear(temp, tempPerson);
     }
     
+    public static String processTransfer(String name, String code, String type, String notes) {
+        OCDB.connect();
+        Gear temp = DT.getGearByCodeAndType(processGearCode(code), processGearTypeCode(type));
+        if (temp == null) return "ERROR: gear doesn't exist or isn't in database";
+        Person tempPerson = DT.getPersonByName(name);
+        if (tempPerson == null) return "ERROR: person doesn't exist or isn't in database";
+        return FT.transferGear(temp, tempPerson, notes);
+    }
+    
     public static String processCheckin(String code, String type) {
         OCDB.connect();
         Gear temp = DT.getGearByCodeAndType(processGearCode(code), processGearTypeCode(type));
         if (temp == null) return "ERROR: gear doesn't exist or isn't in database";
         return FT.checkinGear(temp);
+    }
+    
+    public static String processCheckin(String code, String type, String notes) {
+        OCDB.connect();
+        Gear temp = DT.getGearByCodeAndType(processGearCode(code), processGearTypeCode(type));
+        if (temp == null) return "ERROR: gear doesn't exist or isn't in database";
+        return FT.checkinGear(temp, notes);
     }
     
     public static String processNewPerson(String name) {
@@ -97,12 +123,18 @@ public class IT {
         }
     }
     
-    public static String processNewGear(String code, String type, String modelDescription) {
+    public static String processNewGear(String code, String type, int modelIID) {
         OCDB.connect();
         String pcode = processGearCode(code);
         String ptype = processGearTypeCode(type);
         if (DT.getGearByCodeAndType(pcode, ptype) != null) return "ERROR: gear already exists";
-        return FT.addGearToDB(pcode, ptype, modelDescription);
+        return FT.addGearToDB(pcode, ptype, modelIID);
+    }
+    
+    public static String processNewGearModel(String type, String model, String modelDescription, String price) {
+        type = IT.processGearTypeCode(type);
+        price = IT.processGearPrice(price);
+        return FT.addGearModelToDB(type, model, modelDescription, price);
     }
     
     public static String processGearCode(String code) {
@@ -115,6 +147,10 @@ public class IT {
             return code.substring(0, 1).toUpperCase();
         else
             return "";
+    }
+    
+    public static String processGearPrice(String price) {
+        return price.replaceAll("[^0-9]", "");
     }
     
     public static String inputGearCode() {

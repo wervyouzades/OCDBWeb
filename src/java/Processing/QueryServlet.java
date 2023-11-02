@@ -54,7 +54,9 @@ public class QueryServlet extends HttpServlet {
                     }
                     break;
 
-                
+                case "sc"://check sql server in use
+                    out.println("Server in use: " + OCDB.server);
+                    break;
                 
                 case "dg":
                     try {
@@ -172,6 +174,7 @@ public class QueryServlet extends HttpServlet {
                             }
                         }
                         if (chillin) {
+                            out.println("<p>number of items: " + transactions.size() + "</p>");
                             out.println(RT.printTransactionArray(transactions));
                         }
                     } catch (Exception e) {
@@ -179,7 +182,19 @@ public class QueryServlet extends HttpServlet {
                     }
                     break;
                     
-                
+                    
+                case "dgm"://display gear model
+                    try {
+                        ArrayList<Gear_Model> gear_models = new ArrayList<Gear_Model>();
+                        for (Gear_Model g : DT.gear_models) {
+                            gear_models.add(g);
+                        }
+                        String type = request.getParameter("type");
+                        
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                    
                 case "pg"://preview gear
                     try{
                         String code = IT.processGearCode(request.getParameter("code"));

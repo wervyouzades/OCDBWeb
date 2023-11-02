@@ -48,9 +48,11 @@ public class RT {
                 + "<td>" + gear.notes+ "</td>"
                 + "<td>$" + gear.gear_model.price + "</td>"
                 + "<td>"; 
-                OffsetDateTime e = DT.getLastTransactionDateTimeByGear(gear);
-                if (e != null) 
-                    result += e.toString().replace('T', ' ').replace('Z', ' ');
+                if (gear.id >= 0) {
+                    OffsetDateTime e = DT.getLastTransactionDateTimeByGear(gear);
+                    if (e != null) 
+                        result += e.toString().replace('T', ' ').replace('Z', ' ');
+                }
                 result += "</td>"
                 + "</tr>";
         return result;
@@ -111,6 +113,7 @@ public class RT {
         return result;
     }
     
+    /*
     public static String printGearModelDropDown(ArrayList<Gear_Model> gear_models) {//https://www.w3schools.com/tags/tag_select.asp
         String result = "<label for \"gear_models\">Gear Model: </label>";
         result += "<select name=\"gear_models\" id=\"gear_models\">";
@@ -119,21 +122,37 @@ public class RT {
         }
         result += "</select>";
         return result;
+    }*/
+    
+    public static String printGearModelDropDown(ArrayList<Gear_Model> gear_models) {
+        String result = "<label>Gear Model (IID): ";
+        result += "<input id=\"gear_models\" list=\"modelList\"></label>";
+        result += "<datalist id=\"modelList\">";
+        String afterFirst = "";
+        for (Gear_Model gear_model : gear_models) {
+            afterFirst += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
+        }
+        result += afterFirst;
+        result += "</datalist>";
+        return result;
     }
     
-    public static String printGearModelDropDown(ArrayList<Gear_Model> gear_models, Gear_Model firstInList) {//https://www.w3schools.com/tags/tag_select.asp
-        String result = "<label for \"gear_models\">Gear Model: </label>";
-        result += "<select name=\"gear_models\" id=\"gear_models\">";
+    public static String printGearModelDropDown(ArrayList<Gear_Model> gear_models, Gear_Model firstInList) {
+        //https://stackoverflow.com/questions/18309059/drop-down-menu-text-field-in-one
+        //https://www.w3schools.com/tags/tag_select.asp
+        String result = "<label>Gear Model (IID): ";
+        result += "<input id=\"gear_models\" list=\"modelList\"></label>";
+        result += "<datalist id=\"modelList\">";
         String afterFirst = "";
         for (Gear_Model gear_model : gear_models) {
             if (gear_model.id == firstInList.id) {
-                result += "<option value=" + gear_model.id + ">" + gear_model.description + "</option>";
+                result += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
             } else {
-                afterFirst += "<option value=" + gear_model.id + ">" + gear_model.description + "</option>";
+                afterFirst += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
             }
         }
         result += afterFirst;
-        result += "</select>";
+        result += "</datalist>";
         return result;
     }
     /*
