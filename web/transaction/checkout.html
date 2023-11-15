@@ -18,8 +18,8 @@
 </head>
 <body>
     <div id="header-container"></div>
+    <h1>Gear Checkout</h1>
     <form>
-        <p>Check out gear:</p>
         <p>Key:<br> 
             S	Sleeping Bag <br>
             T	Tent <br>
@@ -78,6 +78,26 @@
             };
             $.get("query", data, function(data) {
                 $("#result2").html(data);
+            });
+        });
+    </script>
+    
+    <br><br>
+    
+    <div id="result3"></div>
+    
+    <form>
+        <button type="button" id="submit3">View receipt</button>
+    </form>
+    
+    <script>
+        $("#submit3").click(function() {
+            var data = {
+                qtype: "RR",
+                name: $("#name").val()
+            };
+            $.get("query", data, function(data) {
+                $("#result3").html(data);
             });
         });
     </script>

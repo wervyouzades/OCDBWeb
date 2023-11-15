@@ -162,7 +162,22 @@ public class TransactionServlet extends HttpServlet {
                     } catch (Exception e) {
                         out.println(e.getMessage());
                     }
-                break;
+                    break;
+                case "rr"://redirect receipt
+                    try {
+                        String name = request.getParameter("name");
+                        Person person = DT.getPersonByName(name);
+                        if (person == null) {
+                            out.println("ERROR: person doesn't exist in database");
+                        } else {
+                            //out.println("<meta http-equiv='refresh' content=\"0; URL=../../../OCDBWeb/viewreceipt.html?iid=" + person.id + "\" />");
+                            //out.println("<meta http-equiv='refresh' content=\"0; URL=javascript:window.open('../../../OCDBWeb/viewreceipt.html?iid=" + person.id + "','_blank');\"/>");
+                            out.println("<script type=\"text/javascript\">window.open('../../../OCDBWeb/viewreceipt.html?iid=" + person.id + "', '_blank');</script>");
+                        }
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                    break;
             }
         }
     }

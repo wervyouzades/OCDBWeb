@@ -5,7 +5,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <html>
     <head>
-        <title>View Gear</title>
+        <title>View Person</title>
         <style>table {
             border-collapse: collapse;
         }</style>
@@ -23,30 +23,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <body>
     <div id="header-container"></div>
         <div id="initialData"></div>
-        <!--<button type="button" id="submit">Edit Gear</button>-->
         <div id="editedData"></div>
         <script>
         $(document).ready(function() {
             const url = new URL(window.location.toLocaleString());
             var data = {
-                gearIID: url.searchParams.get('iid')
+                personIID: url.searchParams.get('iid')
             };
-            $.get("Gear", data, function(data) {
+            $.get("Person", data, function(data) {
                 $("#initialData").html(data);
-                var data2 = {
-                    gearIID: url.searchParams.get('iid'),
+                /*var data2 = {
+                    personIID: url.searchParams.get('iid'),
                     qtype: "E0",
                     code: $("#code").val(),
                     gear_model: $("#gear_models").val(),
                     notes: $("#notes").val()
                 };
-                $.get("Gear", data2, function(data2) {
+                $.get("Person", data2, function(data2) {
                     $("#editedData").html(data2);
-                });
+                });*/
             }); 
 
             
         });
-    </script>
+        </script>
+
+            
     </body>
 </html>

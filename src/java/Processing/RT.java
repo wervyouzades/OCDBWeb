@@ -10,13 +10,13 @@ import java.time.OffsetDateTime;
  */
 import java.util.ArrayList;
 public class RT {
-    public static String printTransaction(Transaction transaction) {
+    public static String printTransactionRow(Transaction transaction) {
         String result = "<tr>"
                 + "<td>" + transaction.id + "</td>"
-                + "<td>CA" + transaction.gear.code + "</td>"
+                + "<td>" + printLinkedGearCode(transaction.gear) + "</td>"
                 + "<td>" + transaction.gear.gear_type.name + "</td>"
-                + "<td>" + transaction.old_person.name + "</td>"
-                + "<td>" + transaction.new_person.name + "</td>"
+                + "<td>" + printLinkedPersonName(transaction.old_person) + "</td>"
+                + "<td>" + printLinkedPersonName(transaction.new_person) + "</td>"
                 + "<td>" + transaction.datetime + "</td>"
                 + "<td>" + transaction.notes + "</td>";
         return result;
@@ -33,18 +33,41 @@ public class RT {
                 + "<td>Notes</td>"
                 + "</tr>";
         for (Transaction t : transactions) {
-            result += printTransaction(t);
+            result += printTransactionRow(t);
         }
         result += "</table>";
         return result;
     }
-    public static String printGear(Gear gear) {
+    
+    public static String printContainedTransactionArray(ArrayList<Transaction> transactions) {
+        String result = "<div style=\"height:200px;overflow:auto;border:1px solid white\">";
+        result += printTransactionArray(transactions);
+        result += "</div>";
+        return result;
+    }
+    
+    public static String printLinkedGearIID(Gear gear) {
+        String result = "<a href=../../../OCDBWeb/viewgear.html?iid=" + gear.id + ">" + gear.id + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedGearCode(Gear gear) {
+        String result = "<a href=../../../OCDBWeb/viewgear.html?iid=" + gear.id + ">CA" + gear.code + " (" + gear.gear_type.code + ")" + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedGearModelDescription(Gear_Model gear_model) {
+        String result = "<a href=../../../OCDBWeb/viewgearmodel.html?iid=" + gear_model.id + ">" + gear_model.description + "</a>";
+        return result;
+    }
+    
+    public static String printGearRow(Gear gear) {
         String result = "<tr>"
-                + "<td>" + "<a href=../../../OCDBWeb/viewgear.html?iid=" + gear.id + ">" + gear.id + "</a>" + "</td>"
-                + "<td>CA" + gear.code + "</td>"
+                + "<td>" + printLinkedGearIID(gear) + "</td>"
+                + "<td>" + printLinkedGearCode(gear) + "</td>"
                 + "<td>" + gear.gear_type.name + "</td>"
-                + "<td>" + gear.person.name + "</td>"
-                + "<td>" + gear.gear_model.description + "</td>"
+                + "<td>" + printLinkedPersonName(gear.person) + "</td>"
+                + "<td>" + printLinkedGearModelDescription(gear.gear_model) + "</td>"
                 + "<td>" + gear.notes+ "</td>"
                 + "<td>$" + gear.gear_model.price + "</td>"
                 + "<td>"; 
@@ -70,16 +93,37 @@ public class RT {
                 + "<td>Last Transaction Date</td>"
                 + "</tr>";
         for (Gear g : gear) {
-            result += printGear(g);
+            result += printGearRow(g);
         } 
         result += "</table>";
         return result;
     }
     
-    public static String printPerson(Person person) {
+    public static String printLinkedPersonIID(Person person) {
+        String result = "<a href=../../../OCDBWeb/viewperson.html?iid=" + person.id + ">" + person.id + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedReceiptPersonIID(Person person) {
+        String result = "<a href=../../../OCDBWeb/viewreceipt.html?iid=" + person.id + ">" + person.id + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedPersonName(Person person) {
+        String result = "<a href=../../../OCDBWeb/viewperson.html?iid=" + person.id + ">" + person.name + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedReceiptPersonName(Person person) {
+        String result = "<a href=../../../OCDBWeb/viewreceipt.html?iid=" + person.id + ">" + person.name + "</a>";
+        return result;
+    }
+    
+    public static String printPersonRow(Person person) {
         String result = "<tr>"
-                + "<td>" + "<a href=viewreceipt.html?iid=" + person.id + ">" + person.id + "</a" + "</td>"
-                + "<td>" + person.name + "</td>"
+                + "<td>" + printLinkedReceiptPersonIID(person) + "</td>"
+                + "<td>" + printLinkedPersonName(person) + "</td>"
+                + "<td>" + printLinkedReceiptPersonName(person) + "</td>"
                 + "</tr>";
         return result;
     }
@@ -89,9 +133,10 @@ public class RT {
         result += "<tr>"
                 + "<td>IID</td>"
                 + "<td>Name</td>"
+                + "<td>Receipt</td>"
                 + "</tr>";
         for (Person p : people) {
-            result += printPerson(p);
+            result += printPersonRow(p);
         }
         result += "</table>";
         return result;
@@ -167,14 +212,14 @@ public class RT {
         System.out.println("Gear type name: " + gear_type.name);
     }
     
-    public static String printPerson(Person person) {
+    public static String printPersonRow(Person person) {
         System.out.println("Person name: " + person.name);
         if (!person.last_trip.equals("null")) {
             System.out.println("Last trip attended: " + person.last_trip);
         }
     }
     
-        public static String printTransaction(Transaction transaction) {
+        public static String printTransactionRow(Transaction transaction) {
         if (transaction.new_person.name.equals(OCDB.checked_in)) {
             System.out.println("Check-in:");
             System.out.println("Gear: " + transaction.gear.gear_type.name + " CA" + transaction.gear.code);

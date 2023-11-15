@@ -35,7 +35,10 @@ public class GearServlet extends HttpServlet {
             DT.populateLocalDB();
             String qtype = null;
             try {
-                qtype = request.getParameter("qtype").toLowerCase();
+                qtype = request.getParameter("qtype");
+                if (qtype != null) {
+                    qtype = qtype.toLowerCase();
+                }
                 //out.println("<p>" + qtype + "</p>");
                 
             } catch(Exception e) {
@@ -54,7 +57,7 @@ public class GearServlet extends HttpServlet {
                 if (iidString.length() > 0) {
                     if (qtype == null || qtype.equals("")) {
                         try {
-                            out.println("<p>Gear display page</p>");
+                            out.println("<h1>Gear Display Page</h1>");
                                 Gear gear = Gear.searchInArray(DT.gear, iid);
                                 ArrayList<Gear> tempGearArray = new ArrayList<Gear>();
                                 tempGearArray.add(gear);
@@ -64,7 +67,7 @@ public class GearServlet extends HttpServlet {
                                 out.println("<p>Transactions with gear:");
                                 ArrayList<Transaction> tempTransactionArray = new ArrayList<Transaction>();
                                 tempTransactionArray = DT.purgeTransactionArrayByGear(DT.transactions, gear);
-                                out.println(RT.printTransactionArray(tempTransactionArray));
+                                out.println(RT.printContainedTransactionArray(tempTransactionArray));
 
 
                                 out.println("<p></p>");
@@ -81,7 +84,7 @@ public class GearServlet extends HttpServlet {
 
 
                         } catch (Exception e) {
-                           out.println("<p>bad url (debug: ");
+                           out.println("<p>ERROR: bad url (debug: ");
                            out.println(e);
                            out.println(")</p>");
                         }
@@ -124,7 +127,7 @@ public class GearServlet extends HttpServlet {
                                         tempGearArray.add(tempGear);
                                         out.println(RT.printGearArray(tempGearArray));
                                     } catch (Exception e) {
-                                        out.println("<p>Data inputted is invalid</p>");
+                                        out.println("<p>ERROR: data inputted is invalid</p>");
                                         out.println("<p>" + e.getMessage() + "</p>");
                                     }
                                     break;
@@ -144,7 +147,7 @@ public class GearServlet extends HttpServlet {
                                         //out.println(tempGearModel.id);
                                         out.println("<p>" + IT.processEditGear(iid, tempGearModel.id, notes) + "</p>");
                                     } catch (Exception e) {
-                                        out.println("<p>Data inputted is invalid</p>");
+                                        out.println("<p>ERROR: data inputted is invalid</p>");
                                         out.println("<p>" + e.getMessage() + "</p>");
                                     }
                                     nextQType = "";
@@ -172,10 +175,10 @@ public class GearServlet extends HttpServlet {
                         }
                     }
                 } else {
-                    out.println("invalid id");
+                    out.println("ERROR: invalid id");
                 }
             } catch (Exception e) {
-                out.println("<p>invalid id</p>");
+                out.println("<p>ERROR: invalid id</p>");
             }
             
 
