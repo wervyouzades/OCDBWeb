@@ -10,7 +10,6 @@ package Processing;
  */
 public abstract class Item {
     //private int id;
-    public abstract void updateReferences();
     public abstract void updateLocalReferences();
     //public abstract String toString();
     

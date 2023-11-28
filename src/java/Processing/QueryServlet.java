@@ -194,8 +194,9 @@ public class QueryServlet extends HttpServlet {
                     } catch (Exception e) {
                         out.println(e.getMessage());
                     }
+                    break;
                     
-                case "pg"://preview gear
+                /*case "pg"://preview gear
                     try{
                         String code = IT.processGearCode(request.getParameter("code"));
                         String type = IT.processGearTypeCode(request.getParameter("type"));
@@ -223,7 +224,7 @@ public class QueryServlet extends HttpServlet {
                     } catch (Exception e) {
                         out.println(e.getMessage());
                     }
-                    break;
+                    break;*/
                 default:
                     out.println("sebastian screwed smth up");
             }

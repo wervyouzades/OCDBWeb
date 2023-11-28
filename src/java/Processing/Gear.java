@@ -17,6 +17,7 @@ public class Gear extends Item{
     public int gear_type_id;
     public int gear_model_id;
     public String notes;
+    public String picture_url;
     public Person person;
     public Gear_Type gear_type;
     public Gear_Model gear_model;
@@ -31,13 +32,24 @@ public class Gear extends Item{
         //updateReferences();
     }
     
-        public Gear(int id, String code, int person_id, int gear_type_id, int gear_model_id, String notes) {
+    public Gear(int id, String code, int person_id, int gear_type_id, int gear_model_id, String notes) {
         this.id = id;
         this.code =  code;
         this.person_id = person_id;
         this.gear_type_id = gear_type_id;
         this.gear_model_id = gear_model_id;
         this.notes = notes;
+        //updateReferences();
+    }
+        
+    public Gear(int id, String code, int person_id, int gear_type_id, int gear_model_id, String notes, String picture_url) {
+        this.id = id;
+        this.code =  code;
+        this.person_id = person_id;
+        this.gear_type_id = gear_type_id;
+        this.gear_model_id = gear_model_id;
+        this.notes = notes;
+        this.picture_url = picture_url;
         //updateReferences();
     }
     

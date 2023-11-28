@@ -53,5 +53,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 });
             });
         </script>
+        <script>
+            window.onload = function(){
+                const url = new URL(window.location.toLocaleString());
+                var data = {
+                    qtype: "DT",
+                    name: url.searchParams.get('name') === null ? '' : url.searchParams.get('name'),
+                    code: url.searchParams.get('code') === null ? '' : url.searchParams.get('code'),
+                    type: url.searchParams.get('type') === null ? '' : url.searchParams.get('type')                    
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            }
+        </script>
     </body>
 </html>

@@ -10,6 +10,32 @@ import java.time.OffsetDateTime;
  */
 import java.util.ArrayList;
 public class RT {
+    
+    public static String printRosterRow(Roster roster) {
+        String result = "<tr>"
+                + "<td>" + roster.id + "</td>"
+                + "<td>" + roster.trip.name + "</td>"
+                + "<td>" + printLinkedPersonName(roster.person) + "</td>"
+                + "</tr>";
+        return result;
+    }
+    
+    
+    public static String printRosterArray(ArrayList<Roster> rosters) {
+        String result = "<table>";
+        result += "<tr>"
+                + "<td>IID</td>"
+                + "<td>Trip</td>"
+                + "<td>Person</td>"
+                + "</tr>";
+        for (Roster r : rosters) {
+            result += printRosterRow(r);
+        }
+        result += "</table>";
+        return result;
+    }
+    
+    
     public static String printTransactionRow(Transaction transaction) {
         String result = "<tr>"
                 + "<td>" + transaction.id + "</td>"
@@ -84,13 +110,13 @@ public class RT {
         String result = "<table>";
         result += "<tr>"
                 + "<td>IID</td>"
-                + "<td>Gear code</td>"
-                + "<td>Gear type</td>"
-                + "<td>Person in possession of gear</td>"
-                + "<td>Gear model</td>"
+                + "<td width=\"6%\">Gear code</td>"
+                + "<td width=\"14%\">Gear type</td>"
+                + "<td width=\"8%\">Person in possession of gear</td>"
+                + "<td width=\"40%\">Gear model</td>"
                 + "<td>Notes</td>"
                 + "<td>Price</td>"
-                + "<td>Last Transaction Date</td>"
+                + "<td width=\"16%\">Last Transaction Date</td>"
                 + "</tr>";
         for (Gear g : gear) {
             result += printGearRow(g);

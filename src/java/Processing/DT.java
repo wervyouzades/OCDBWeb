@@ -36,6 +36,9 @@ public class DT {
     public static ArrayList<Person> people;
     public static ArrayList<Gear_Model> gear_models;
     public static ArrayList<Gear_Type> gear_types;
+    public static ArrayList<Trip> trips;
+    public static ArrayList<Roster> rosters;
+    
     
     public static void populateLocalDB() {
         OCDB.connect();
@@ -44,11 +47,15 @@ public class DT {
         people = new ArrayList<Person>();
         gear_models = new ArrayList<Gear_Model>();
         gear_types = new ArrayList<Gear_Type>();
+        trips = new ArrayList<Trip>();
+        rosters = new ArrayList<Roster>();
         String gearTypesSQL = "SELECT * FROM gear_types;";
         String gearModelsSQL = "SELECT * FROM gear_models;";
         String peopleSQL = "SELECT * FROM people ORDER BY name;";
         String gearSQL = "SELECT * FROM gear ORDER BY gear_type_id, code;";
         String transactionsSQL = "SELECT * FROM transactions ORDER BY datetime DESC;";
+        String tripsSQL = "SELECT * FROM trips ORDER BY datetime DESC;";
+        String rostersSQL = "SELECT * FROM roster;";
         OCDB.connect();
         try (
             Statement gearTypesSTMT = OCDB.conn.createStatement();
@@ -56,11 +63,15 @@ public class DT {
             Statement peopleSTMT = OCDB.conn.createStatement();
             Statement gearSTMT = OCDB.conn.createStatement();
             Statement transactionsSTMT = OCDB.conn.createStatement();
+            Statement tripsSTMT = OCDB.conn.createStatement();
+            Statement rostersSTMT = OCDB.conn.createStatement();
             ResultSet gearTypesRS = gearTypesSTMT.executeQuery(gearTypesSQL);
             ResultSet gearModelsRS = gearModelsSTMT.executeQuery(gearModelsSQL);
             ResultSet peopleRS = peopleSTMT.executeQuery(peopleSQL);
             ResultSet gearRS = gearSTMT.executeQuery(gearSQL);
             ResultSet transactionsRS = transactionsSTMT.executeQuery(transactionsSQL);
+            ResultSet tripsRS = tripsSTMT.executeQuery(tripsSQL);
+            ResultSet rostersRS = rostersSTMT.executeQuery(rostersSQL);
                 ) {
             while (gearTypesRS.next()) {
                 int id = Integer.parseInt(gearTypesRS.getString("id"));
@@ -101,7 +112,11 @@ public class DT {
                 if (notes == null) {
                     notes = "";
                 }
-                Gear temp = new Gear(id, code, person_id, gear_type_id, gear_model_id, notes);
+                String picture_url = gearRS.getString("picture_url");
+                if (picture_url == null) {
+                    picture_url = "";
+                }
+                Gear temp = new Gear(id, code, person_id, gear_type_id, gear_model_id, notes, picture_url);
                 temp.updateLocalReferences();
                 gear.add(temp);
             }
@@ -124,11 +139,37 @@ public class DT {
                 transactions.add(temp);
             }
             
+            while (tripsRS.next()) {
+                int id = Integer.parseInt(tripsRS.getString("id"));
+                String name = tripsRS.getString("name");
+                //OffsetDateTime offsetdatetime = tripsRS.getObject("datetime", OffsetDateTime.class);
+                String datetime = tripsRS.getString("datetime");
+                Trip temp = new Trip(id, name, datetime);
+                temp.updateLocalReferences();
+                trips.add(temp);
+            }
+            
+            while (rostersRS.next()) {
+                int id = Integer.parseInt(rostersRS.getString("id"));
+                int trip_id = Integer.parseInt(rostersRS.getString("trip_id"));
+                int person_id = Integer.parseInt(rostersRS.getString("person_id"));
+                Roster temp = new Roster(id, trip_id, person_id);
+                temp.updateLocalReferences();
+                rosters.add(temp);
+            }
+            
+            
             OCDB.close();
             populateLocalGearWithTransactions();
         } catch (SQLException ex) {
             OCDB.close();
             System.out.println(ex.getMessage());
+            /*Trip temp2 = new Trip(1, "ael", "ael");
+            temp2.updateLocalReferences();
+            trips.add(temp2);
+            Roster temp = new Roster(1, 1, 1);
+            temp.updateLocalReferences();
+            rosters.add(temp);*/
         }
     }
     
@@ -144,6 +185,16 @@ public class DT {
             if (p.id == id) return p;
         }
         return null;
+    }
+    
+    public static ArrayList<Roster> purgeRosterArrayByPerson(ArrayList<Roster> rosters, Person person) {
+        ArrayList<Roster> temp = new ArrayList<Roster>();
+        for (Roster r : rosters) {
+            if (r.person.id == person.id) {
+                temp.add(r);
+            }
+        }
+        return temp;
     }
     
     public static ArrayList<Transaction> getTransactionsByPerson(Person person) {

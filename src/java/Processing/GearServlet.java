@@ -57,13 +57,16 @@ public class GearServlet extends HttpServlet {
                 if (iidString.length() > 0) {
                     if (qtype == null || qtype.equals("")) {
                         try {
-                            out.println("<h1>Gear Display Page</h1>");
                                 Gear gear = Gear.searchInArray(DT.gear, iid);
+                                out.println("<h1>Gear CA" + gear.code + "(" + gear.gear_type.code + ")" + " Display Page</h1>");
+                                
                                 ArrayList<Gear> tempGearArray = new ArrayList<Gear>();
                                 tempGearArray.add(gear);
                                 out.println(RT.printGearArray(tempGearArray));
 
-                                out.println("<p></p>");
+                                out.println("<img src=\"" + gear.picture_url + "\" style=\"max-height:400px; max-width:200px; height:auto; width:auto;\">");
+                                
+                                out.println("<p></p><br>");
                                 out.println("<p>Transactions with gear:");
                                 ArrayList<Transaction> tempTransactionArray = new ArrayList<Transaction>();
                                 tempTransactionArray = DT.purgeTransactionArrayByGear(DT.transactions, gear);

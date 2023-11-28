@@ -37,5 +37,17 @@
                 });
             });
         </script>
+                <script>
+            window.onload = function(){
+                const url = new URL(window.location.toLocaleString());
+                var data = {
+                    qtype: "DP",
+                    onlyShowPeopleWithGear: false
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            }
+        </script>
     </body>
 </html>

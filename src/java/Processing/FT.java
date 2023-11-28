@@ -71,7 +71,7 @@ public class FT {
         }
     }
 
-    public static String checkoutGear(Gear gear, Person person) {
+    public static String checkoutGear(Gear gear, Person person) {//OBSELETED; NO NOTES
         if (gear.person.name.equals(OCDB.checked_in)) {
             try {
                 String result = FT.addTransactionToDB(gear, gear.person, person);
@@ -108,14 +108,14 @@ public class FT {
             try {
                 String temp = FT.addTransactionToDB(gear, gear.person, person, notes);
                 return "successfully checked out "
-                        + gear.gear_type.name + " CA" + gear.code + " to " + person.name  + 
+                        + gear.gear_type.name + " CA" + gear.code + " to " + RT.printLinkedPersonName(person)  + 
                         "\n" + temp;
             } catch (Exception e) {
                 return "failure: " + e.getMessage();
             }
         } else {
             return "gear already checked out<br>"
-                    + "transfer gear from " + gear.person.name + " to " + person.name + "?<br>"
+                    + "transfer gear from " + RT.printLinkedPersonName(gear.person) + " to " + RT.printLinkedPersonName(person) + "?<br>"
                     + "<button type=\"button\" id=\"transfer\">Transfer</button>"
                     + "    <div id=\"result2\"></div>"
                     + "    <script>\n" +
@@ -137,7 +137,7 @@ public class FT {
         }
     }
     
-    public static String transferGear(Gear gear, Person person) {
+    public static String transferGear(Gear gear, Person person) {//OBSELETED; NO NOTES
         if (!gear.person.name.equals(OCDB.checked_in)) {
             try {
                 FT.addTransactionToDB(gear, gear.person, person);
@@ -163,7 +163,7 @@ public class FT {
         }
     }
     
-    public static String checkinGear(Gear gear) {
+    public static String checkinGear(Gear gear) {//OBSELETED; NO NOTES
         if (!gear.person.name.equals(OCDB.checked_in)) {
             try {
                 FT.addTransactionToDB(gear, gear.person, DT.getPersonByName(OCDB.checked_in));
@@ -183,7 +183,7 @@ public class FT {
             try {
                 String temp = FT.addTransactionToDB(gear, gear.person, DT.getPersonByName(OCDB.checked_in), notes);
                 return "successfully checked in "
-                        + gear.gear_type.name + " CA" + gear.code + " from " + gear.person.name +
+                        + gear.gear_type.name + " CA" + gear.code + " from " + RT.printLinkedPersonName(gear.person) +
                         "\n" + temp;
             } catch (Exception e) {
                 return "failure: " + e.getMessage();

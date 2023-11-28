@@ -21,6 +21,12 @@
         <form>
         <p>(blank fields will be ignored)</p>
         <p>
+            <input type="checkbox" id="showOnlyCheckedOutGear" name="showOnlyCheckedOutGear" value="true">show only checked out gear
+        </p>
+        <p>
+            <input type="checkbox" id="showOnlyUsablePresentGear" name="showOnlyUsablePresentGear" value="true">show only usable/present gear
+        </p>
+        <p>
             <label for="name">Possessed by: </label>
             <input type="text" id="name" placeholder="ex. sebastian desouza">
         </p>
@@ -31,12 +37,6 @@
         <p>
             <label for="type">Gear Type:</label>
             <input type="text" id="type" placeholder="ex. W">
-        </p>
-        <p>
-            <input type="checkbox" id="showOnlyCheckedOutGear" name="showOnlyCheckedOutGear" value="true">show only checked out gear
-        </p>
-        <p>
-            <input type="checkbox" id="showOnlyUsablePresentGear" name="showOnlyUsablePresentGear" value="true">show only usable/present gear
         </p>
         <button type="button" id="submit">Display</button>
     </form>
@@ -55,6 +55,22 @@
                     $("#result").html(data);
                 });
             });
+        </script>
+        <script>
+            window.onload = function(){
+                const url = new URL(window.location.toLocaleString());
+                var data = {
+                    qtype: "DG",
+                    showOnlyCheckedOutGear: $("#showOnlyCheckedOutGear").is(":checked"),
+                    showOnlyUsablePresentGear: $("#showOnlyUsablePresentGear").is(":checked"),
+                    name: url.searchParams.get('name') === null ? '' : url.searchParams.get('name'),
+                    code: url.searchParams.get('code') === null ? '' : url.searchParams.get('code'),
+                    type: url.searchParams.get('type') === null ? '' : url.searchParams.get('type')                    
+                };
+                $.get("query", data, function (data) {
+                    $("#result").html(data);
+                });
+            }
         </script>
     </body>
 </html>

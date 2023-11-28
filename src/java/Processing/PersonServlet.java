@@ -77,6 +77,12 @@ public class PersonServlet extends HttpServlet {
                                 tempTransactionArray = DT.purgeTransactionArrayByPerson(DT.transactions, person);
                                 out.println(RT.printContainedTransactionArray(tempTransactionArray));
 
+                                out.println("<p></p>");
+                                out.println("<p>Trips person has gone on:</p>");
+                                
+                                ArrayList<Roster> tempRosterArray = new ArrayList<Roster>();
+                                tempRosterArray = DT.purgeRosterArrayByPerson(DT.rosters, person);
+                                out.println(RT.printRosterArray(tempRosterArray));
 
                                 out.println("<p></p>");
                                 out.println("<p>Edit person:</p>");

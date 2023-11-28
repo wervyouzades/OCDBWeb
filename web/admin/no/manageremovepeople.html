@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Remove People</title>
+<img src="http://ec2-18-118-33-240.us-east-2.compute.amazonaws.com/gear_images/IMG_3764.PNG">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       $(document).ready(function () {
@@ -30,7 +31,7 @@
     <script>
         $("#submit").click(function() {
             var data = {
-                qtype: "MRP",
+                qtype: "",
                 name: $("#name").val()
             };
             $.get("query", data, function(data) {
