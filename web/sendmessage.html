@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send message</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#header-container").load("../../OCDBWeb/header.html");
+      });
+    </script>
+    <style>table {
+            border-collapse: collapse;
+        }</style>
+        <style>table, tr, td {
+            border: 1px solid;
+        }</style>
+        <link rel="icon" type="image/x-icon" href="https://allatoms.com/ocdb/icon.ico">
+</head>
+<body>
+    <div id="header-container"></div>
+    <h1>Send Message</h1>
+    <form>
+        <p>
+            <label for="message">Message</label>
+            <input type="text" id="message">
+        </p>
+        <p>
+            <label for="webhookURL">Webhook URL</label>
+            <input type="text" id="webhookURL" placeholder="defaults to Website channel">
+        </p>
+        <button type="button" id="submit">Send</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        $("#submit").click(function() {
+            var data = {
+                message: $("#message").val(),
+                webhookURL: $("#webhookURL").val()
+            };
+            $.get("Message", data, function(data) {
+                $("#result").html(data);
+            });
+        });
+    </script>
+    
+
+</body>
+</html>

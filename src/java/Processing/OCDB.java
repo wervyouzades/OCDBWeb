@@ -19,7 +19,7 @@ import java.io.PrintWriter;
  */
 public class OCDB {
     /*
-    private static String url = "jdbc:postgresql://localhost:5432/aserfasv";
+    private static String url = "jdbc:postgresql://localhost:5432/backuptest3";//was aserfasv
     private static String user = "postgres";
     private static String password = "Ballstate1";
     public static String server = "TEST SERVER (data is NOT accurate)";

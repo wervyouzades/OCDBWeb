@@ -11,6 +11,24 @@
     <script>
       $(document).ready(function () {
         $("#header-container").load("../../OCDBWeb/header.html");
+        const url = new URL(window.location.toLocaleString());
+        var data = {
+            qtype: "DG",
+            showOnlyCheckedOutGear: $("#showOnlyCheckedOutGear").is(":checked"),
+            showOnlyUsablePresentGear: $("#showOnlyUsablePresentGear").is(":checked"),
+            name: url.searchParams.get('name') === null ? '' : url.searchParams.get('name'),
+            code: url.searchParams.get('code') === null ? '' : url.searchParams.get('code'),
+            type: url.searchParams.get('type') === null ? '' : url.searchParams.get('type')                    
+        };
+        $.get("query", data, function (data) {
+            $("#result").html(data);
+                var data2 = {
+                    qtype: "PDD"
+                };
+                $.get("query", data2, function (data2) {
+                    $("#nameDropDown").html(data2);
+                });
+        });
       });
     </script>
         <link rel="icon" type="image/x-icon" href="https://allatoms.com/ocdb/icon.ico">
@@ -26,10 +44,22 @@
         <p>
             <input type="checkbox" id="showOnlyUsablePresentGear" name="showOnlyUsablePresentGear" value="true">show only usable/present gear
         </p>
-        <p>
+        <!--<p>
             <label for="name">Possessed by: </label>
             <input type="text" id="name" placeholder="ex. sebastian desouza">
-        </p>
+        </p>-->
+        <label>Name <input id="name" autocomplete="off" placeholder="ex. sebastian desouza" list="personList"></label>
+        <div id="nameDropDown"></div>
+        <script>
+            /*var populateDropDown = function () {
+                var data = {
+                    qtype: "PDD"
+                };
+                $.get("query", data, function (data) {
+                    $("#nameDropDown").html(data);
+                });
+            };*/
+        </script>
         <p>
             <label for="code">Gear Code:</label>
             <input type="text" id="code" placeholder="ex. 3 or CA3">
@@ -57,20 +87,18 @@
             });
         </script>
         <script>
-            window.onload = function(){
-                const url = new URL(window.location.toLocaleString());
-                var data = {
-                    qtype: "DG",
-                    showOnlyCheckedOutGear: $("#showOnlyCheckedOutGear").is(":checked"),
-                    showOnlyUsablePresentGear: $("#showOnlyUsablePresentGear").is(":checked"),
-                    name: url.searchParams.get('name') === null ? '' : url.searchParams.get('name'),
-                    code: url.searchParams.get('code') === null ? '' : url.searchParams.get('code'),
-                    type: url.searchParams.get('type') === null ? '' : url.searchParams.get('type')                    
-                };
-                $.get("query", data, function (data) {
-                    $("#result").html(data);
-                });
-            }
+            /*const url = new URL(window.location.toLocaleString());
+            var data = {
+                qtype: "DG",
+                showOnlyCheckedOutGear: $("#showOnlyCheckedOutGear").is(":checked"),
+                showOnlyUsablePresentGear: $("#showOnlyUsablePresentGear").is(":checked"),
+                name: url.searchParams.get('name') === null ? '' : url.searchParams.get('name'),
+                code: url.searchParams.get('code') === null ? '' : url.searchParams.get('code'),
+                type: url.searchParams.get('type') === null ? '' : url.searchParams.get('type')                    
+            };
+            $.get("query", data, function (data) {
+                $("#result").html(data);
+            });*/
         </script>
     </body>
 </html>

@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.*;
+//import javax.*;
 import java.util.ArrayList;
 import com.google.gson.JsonObject;
 import java.io.Writer;
@@ -61,6 +61,7 @@ public class QueryServlet extends HttpServlet {
                 case "dg":
                     try {
                         //NEED TO FIX BAD INPUTS-----------------------------------------------------------------------------------
+                        
                         ArrayList<Gear> gear = new ArrayList<Gear>();
                         for (Gear g : DT.gear) {
                             gear.add(g);
@@ -79,13 +80,15 @@ public class QueryServlet extends HttpServlet {
                             gear = DT.purgeGearArrayByUsablePresentGear(gear);
                         }
                         boolean chillin = true;
-                        if (name.length() > 0) {
-                            Person p = DT.getPersonByName(name);
-                            if (p == null) {
-                                chillin = false;
-                                out.println("ERROR: person doesn't exist or isn't in database");
-                            } else {
-                                gear = DT.purgeGearArrayByPerson(gear, p);
+                        if (name != null) {
+                            if (name.length() > 0) {
+                                Person p = DT.getPersonByName(name);
+                                if (p == null) {
+                                    chillin = false;
+                                    out.println("ERROR: person doesn't exist or isn't in database");
+                                } else {
+                                    gear = DT.purgeGearArrayByPerson(gear, p);
+                                }
                             }
                         }
                         if (code.length() > 0) {
@@ -111,6 +114,11 @@ public class QueryServlet extends HttpServlet {
                         
                         if (chillin == true) {
                             out.println("<p>number of items: " + gear.size() + "</p>");
+                            int price = 0;
+                            for (int i = 0; i < gear.size(); i++) {
+                                price += Integer.parseInt(gear.get(i).gear_model.price);
+                            }
+                            out.println("<p>total price: $" + price + "</p>");
                             out.println(RT.printGearArray(gear));
                         }
                     } catch (Exception e) {
@@ -183,14 +191,40 @@ public class QueryServlet extends HttpServlet {
                     break;
                     
                     
-                case "dgm"://display gear model
+                case "dtr"://display trips
+                    try {
+                        out.println(RT.printTripArray(DT.trips));
+                    } catch (Exception e) {
+                        out.println(e);
+                    }
+                    break;
+                    
+                case "dgm"://display gear models
                     try {
                         ArrayList<Gear_Model> gear_models = new ArrayList<Gear_Model>();
                         for (Gear_Model g : DT.gear_models) {
                             gear_models.add(g);
                         }
                         String type = request.getParameter("type");
-                        
+                        if (type.length() > 0) {
+                            type = IT.processGearTypeCode(type);
+                            Gear_Type gear_type = DT.getGearTypeByCode(type);
+                            DT.purgeGearModelArrayByType(gear_models, gear_type);
+                        }
+                        out.println(RT.printGearModelArray(gear_models));
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                    break;
+                    
+                case "pdd"://person drop down
+                    /*out.println("<p>");
+                    for (int i = 0; i < DT.people.size(); i++) {
+                        out.println(DT.people.get(i));
+                    }
+                    out.println("</p>");*/
+                    try {
+                        out.println(RT.printPersonDropDownDatalist(DT.people));
                     } catch (Exception e) {
                         out.println(e.getMessage());
                     }

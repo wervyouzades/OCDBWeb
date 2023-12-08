@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Wervy Ouzades
  */
-@WebServlet(name = "PersonServlet", urlPatterns = {"/Person"})
-public class PersonServlet extends HttpServlet {
+public class TripServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,48 +50,33 @@ public class PersonServlet extends HttpServlet {
             
             //out.println("<p>what</p>");
             try {
-                String iidString = request.getParameter("personIID");
+                String iidString = request.getParameter("tripIID");
                 int iid = Integer.parseInt(iidString);
 
                 if (iidString.length() > 0) {
                     if (qtype == null || qtype.equals("")) {
                         try {
-                            out.println("<h1>Person Display Page</h1>");
-                                Person person = Person.searchInArray(DT.people, iid);
-                                ArrayList<Person> tempPersonArray = new ArrayList<Person>();
-                                tempPersonArray.add(person);
-                                out.println(RT.printPersonArray(tempPersonArray));
+                            out.println("<h1>Trip Display Page</h1>");
+                            Trip trip = Trip.searchInArray(DT.trips, iid);
+                            ArrayList<Trip> tempTripArray = new ArrayList<Trip>();
+                            tempTripArray.add(trip);
+                            out.println(RT.printTripArray(tempTripArray));
+                            
+                            out.println("<p></p>");
+                            out.println("<p>People on trip:</p>");
+                            ArrayList<Roster> tripRoster = DT.purgeRosterArrayByTrip(DT.rosters,trip);
+                            out.println(RT.printRosterArray(tripRoster));
+                            
+                            out.println("<p></p>");
+                            out.println("<p>Edit trip:</p>");
+                            /*
+                            out.println(RT.printNamePrefilledInputBox(person));
 
-                                out.println("<p></p>");
-                                out.println("<p>Gear possessed by person:");
-                                ArrayList<Gear> tempGearArray = new ArrayList<Gear>();
-                                tempGearArray = DT.purgeGearArrayByPerson(DT.gear, person);
-                                out.println(RT.printGearArray(tempGearArray));
-                                
-                                
-                                out.println("<p></p>");
-                                out.println("<p>Transactions involving person:");
-                                ArrayList<Transaction> tempTransactionArray = new ArrayList<Transaction>();
-                                tempTransactionArray = DT.purgeTransactionArrayByPerson(DT.transactions, person);
-                                out.println(RT.printContainedTransactionArray(tempTransactionArray));
+                            ArrayList<Gear_Model> modelsOfType = DT.purgeGearModelArrayByType(DT.gear_models, gear.gear_type);
+                            out.println(RT.printGearModelDropDown(modelsOfType, gear.gear_model));
 
-                                out.println("<p></p>");
-                                out.println("<p>Trips person has gone on:</p>");
-                                
-                                ArrayList<Roster> tempRosterArray = new ArrayList<Roster>();
-                                tempRosterArray = DT.purgeRosterArrayByPerson(DT.rosters, person);
-                                out.println(RT.printRosterArray(tempRosterArray));
-
-                                out.println("<p></p>");
-                                out.println("<p>Edit person (to be added):</p>");
-                                /*
-                                out.println(RT.printNamePrefilledInputBox(person));
-
-                                ArrayList<Gear_Model> modelsOfType = DT.purgeGearModelArrayByType(DT.gear_models, gear.gear_type);
-                                out.println(RT.printGearModelDropDown(modelsOfType, gear.gear_model));
-
-                                out.println(RT.printGearNotesPrefilledInputBox(gear));
-                                */
+                            out.println(RT.printGearNotesPrefilledInputBox(gear));
+                            */
 
                         } catch (Exception e) {
                            out.println("<p>ERROR: bad url (debug: ");

@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>TripServlet</servlet-name>
+        <servlet-class>Processing.TripServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ReceiptServlet</servlet-name>
         <url-pattern>/Receipt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TripServlet</servlet-name>
+        <url-pattern>/Trip</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

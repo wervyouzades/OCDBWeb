@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Wervy Ouzades
  */
-@WebServlet(name = "PersonServlet", urlPatterns = {"/Person"})
-public class PersonServlet extends HttpServlet {
+@WebServlet(name = "GearModelServlet", urlPatterns = {"/GearModel"})
+public class GearModelServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,40 +52,27 @@ public class PersonServlet extends HttpServlet {
             
             //out.println("<p>what</p>");
             try {
-                String iidString = request.getParameter("personIID");
+                String iidString = request.getParameter("gearModelIID");
                 int iid = Integer.parseInt(iidString);
 
                 if (iidString.length() > 0) {
                     if (qtype == null || qtype.equals("")) {
                         try {
-                            out.println("<h1>Person Display Page</h1>");
-                                Person person = Person.searchInArray(DT.people, iid);
-                                ArrayList<Person> tempPersonArray = new ArrayList<Person>();
-                                tempPersonArray.add(person);
-                                out.println(RT.printPersonArray(tempPersonArray));
+                            out.println("<h1>Gear Model Display Page</h1>");
+                                Gear_Model gear_model = Gear_Model.searchInArray(DT.gear_models, iid);
+                                ArrayList<Gear_Model> tempGearModelArray = new ArrayList<Gear_Model>();
+                                tempGearModelArray.add(gear_model);
+                                out.println(RT.printGearModelArray(tempGearModelArray));
 
                                 out.println("<p></p>");
-                                out.println("<p>Gear possessed by person:");
+                                out.println("<p>Gear of model:");
                                 ArrayList<Gear> tempGearArray = new ArrayList<Gear>();
-                                tempGearArray = DT.purgeGearArrayByPerson(DT.gear, person);
+                                tempGearArray = DT.purgeGearArrayByModel(DT.gear, gear_model);
                                 out.println(RT.printGearArray(tempGearArray));
                                 
                                 
                                 out.println("<p></p>");
-                                out.println("<p>Transactions involving person:");
-                                ArrayList<Transaction> tempTransactionArray = new ArrayList<Transaction>();
-                                tempTransactionArray = DT.purgeTransactionArrayByPerson(DT.transactions, person);
-                                out.println(RT.printContainedTransactionArray(tempTransactionArray));
-
-                                out.println("<p></p>");
-                                out.println("<p>Trips person has gone on:</p>");
-                                
-                                ArrayList<Roster> tempRosterArray = new ArrayList<Roster>();
-                                tempRosterArray = DT.purgeRosterArrayByPerson(DT.rosters, person);
-                                out.println(RT.printRosterArray(tempRosterArray));
-
-                                out.println("<p></p>");
-                                out.println("<p>Edit person (to be added):</p>");
+                                out.println("<p>Edit gear model(to be added):</p>");
                                 /*
                                 out.println(RT.printNamePrefilledInputBox(person));
 

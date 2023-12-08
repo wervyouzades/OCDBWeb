@@ -11,6 +11,54 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 public class RT {
     
+    public static String printGearModelArray(ArrayList<Gear_Model> gear_models) {
+        String result = "<table>";
+        result += "<tr>"
+                + "<td>IID</td>"
+                + "<td>Gear type</td>"
+                + "<td>Gear model</td>"
+                + "<td>Price</td>"
+                + "</tr>";
+        for (Gear_Model g : gear_models) {
+            result += printGearModelRow(g);
+        }
+        result += "</table>";
+        return result;
+    }
+    
+    public static String printGearModelRow(Gear_Model gear_model) {
+        String result = "<tr>"
+                + "<td>" + printLinkedGearModelIID(gear_model) + "</td>"
+                + "<td>" + gear_model.gear_type.name + "</td>"
+                + "<td>" + printLinkedGearModelDescription(gear_model) + "</td>"
+                + "<td>$" + gear_model.price + "</td>"
+                + "</tr>";
+        return result;
+    }
+    
+    public static String printTripArray(ArrayList<Trip> trips) {
+        String result = "<table>";
+        result += "<tr>"
+                + "<td>IID</td>"
+                + "<td>Trip Name</td>"
+                + "<td>Trip Date</td>"
+                + "</tr>";
+        for (Trip t : trips) {
+            result += printTripRow(t);
+        }
+        result += "</table>";
+        return result;
+    }
+    
+    public static String printTripRow(Trip trip) {
+        String result = "<tr>"
+                + "<td>" + printLinkedTripIID(trip) + "</td>"
+                + "<td>" + trip.name + "</td>"
+                + "<td>" + trip.datetime + "</td>"
+                + "</tr>";
+        return result;
+    }
+    
     public static String printRosterRow(Roster roster) {
         String result = "<tr>"
                 + "<td>" + roster.id + "</td>"
@@ -44,7 +92,8 @@ public class RT {
                 + "<td>" + printLinkedPersonName(transaction.old_person) + "</td>"
                 + "<td>" + printLinkedPersonName(transaction.new_person) + "</td>"
                 + "<td>" + transaction.datetime + "</td>"
-                + "<td>" + transaction.notes + "</td>";
+                + "<td>" + transaction.notes + "</td>"
+                + "</tr>";
         return result;
     }
     public static String printTransactionArray(ArrayList<Transaction> transactions) {
@@ -72,6 +121,11 @@ public class RT {
         return result;
     }
     
+    public static String printLinkedTripIID(Trip trip) {
+        String result = "<a href=../../../OCDBWeb/viewtrip.html?iid=" + trip.id + ">" + trip.id + "</a>";
+        return result;
+    }
+    
     public static String printLinkedGearIID(Gear gear) {
         String result = "<a href=../../../OCDBWeb/viewgear.html?iid=" + gear.id + ">" + gear.id + "</a>";
         return result;
@@ -79,6 +133,11 @@ public class RT {
     
     public static String printLinkedGearCode(Gear gear) {
         String result = "<a href=../../../OCDBWeb/viewgear.html?iid=" + gear.id + ">CA" + gear.code + " (" + gear.gear_type.code + ")" + "</a>";
+        return result;
+    }
+    
+    public static String printLinkedGearModelIID(Gear_Model gear_model) {
+        String result = "<a href=../../../OCDBWeb/viewgearmodel.html?iid=" + gear_model.id + ">" + gear_model.id + "</a>";
         return result;
     }
     
@@ -221,6 +280,22 @@ public class RT {
             } else {
                 afterFirst += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
             }
+        }
+        result += afterFirst;
+        result += "</datalist>";
+        return result;
+    }
+    
+    public static String printPersonDropDownDatalist(ArrayList<Person> people) {
+        //https://stackoverflow.com/questions/18309059/drop-down-menu-text-field-in-one
+        //https://www.w3schools.com/tags/tag_select.asp
+        String result = "";
+        //String result = "<label>Name ";
+        //result += "<input id=\"name\" autocomplete=\"off\" placeholder=\"ex. sebastian desouza\" list=\"personList\"></label>";
+        result += "<datalist id=\"personList\">";
+        String afterFirst = "";
+        for (Person person : people) {
+            afterFirst += "<option value=\"" + person.name + "\">" + person.name + "</option>";
         }
         result += afterFirst;
         result += "</datalist>";

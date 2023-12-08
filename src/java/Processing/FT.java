@@ -33,7 +33,7 @@ public class FT {
                 DT.populateLocalDB();
             } catch (SQLException ex) {
                 if (!ex.getMessage().equals("No results were returned by the query.")){
-                    temp += ex.getMessage() + "\n";;
+                    temp += ex.getMessage() + "\n";
                 }
             }
             return temp;

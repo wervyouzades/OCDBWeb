@@ -50,7 +50,7 @@ public class DT {
         trips = new ArrayList<Trip>();
         rosters = new ArrayList<Roster>();
         String gearTypesSQL = "SELECT * FROM gear_types;";
-        String gearModelsSQL = "SELECT * FROM gear_models;";
+        String gearModelsSQL = "SELECT * FROM gear_models ORDER BY gear_type_id, description;";
         String peopleSQL = "SELECT * FROM people ORDER BY name;";
         String gearSQL = "SELECT * FROM gear ORDER BY gear_type_id, code;";
         String transactionsSQL = "SELECT * FROM transactions ORDER BY datetime DESC;";
@@ -197,6 +197,16 @@ public class DT {
         return temp;
     }
     
+    public static ArrayList<Roster> purgeRosterArrayByTrip(ArrayList<Roster> rosters, Trip trip) {
+        ArrayList<Roster> temp = new ArrayList<Roster>();
+        for (Roster r : rosters) {
+            if (r.trip.id == trip.id) {
+                temp.add(r);
+            }
+        }
+        return temp;
+    }
+    
     public static ArrayList<Transaction> getTransactionsByPerson(Person person) {
         ArrayList<Transaction> temp = new ArrayList<Transaction>();
         for (Transaction t : DT.transactions) {
@@ -213,21 +223,7 @@ public class DT {
         return temp;
     }
     
-    public static ArrayList<Transaction> purgeTransactionArrayByPerson(ArrayList<Transaction> transactions, Person person) {
-        ArrayList<Transaction> temp = new ArrayList<Transaction>();
-        for (Transaction t : transactions) {
-            if(t.old_person.id == person.id || t.new_person.id == person.id) temp.add(t);
-        }
-        return temp;
-    }
-    
-    public static ArrayList<Transaction> purgeTransactionArrayByGear(ArrayList<Transaction> transactions, Gear gear) {
-        ArrayList<Transaction> temp = new ArrayList<Transaction>();
-        for (Transaction t : transactions) {
-            if (t.gear.id == gear.id) temp.add(t);
-        }
-        return temp;
-    }
+
     
     public static ArrayList<Gear> getGearByPerson(Person person) {
         ArrayList<Gear> temp = new ArrayList<Gear>();
@@ -333,12 +329,39 @@ public class DT {
         return temp;
     }
     
+    public static ArrayList<Gear> purgeGearArrayByModel(ArrayList<Gear> gear, Gear_Model gear_model) {
+        ArrayList<Gear> temp = new ArrayList<Gear>();
+        for (Gear g : gear) {
+            if (g.gear_model.id == gear_model.id) {
+                temp.add(g);
+            }
+        }
+        return temp;
+    }
+    
     public static ArrayList<Gear_Model> purgeGearModelArrayByType(ArrayList<Gear_Model> gear_models, Gear_Type gear_type) {
         ArrayList<Gear_Model> temp = new ArrayList<Gear_Model>();
         for (Gear_Model gm : gear_models) {
             if (gm.gear_type.id == gear_type.id) {
                 temp.add(gm);
             }
+        }
+        return temp;
+    }
+    
+    
+    public static ArrayList<Transaction> purgeTransactionArrayByPerson(ArrayList<Transaction> transactions, Person person) {
+        ArrayList<Transaction> temp = new ArrayList<Transaction>();
+        for (Transaction t : transactions) {
+            if(t.old_person.id == person.id || t.new_person.id == person.id) temp.add(t);
+        }
+        return temp;
+    }
+    
+    public static ArrayList<Transaction> purgeTransactionArrayByGear(ArrayList<Transaction> transactions, Gear gear) {
+        ArrayList<Transaction> temp = new ArrayList<Transaction>();
+        for (Transaction t : transactions) {
+            if (t.gear.id == gear.id) temp.add(t);
         }
         return temp;
     }
