@@ -270,19 +270,25 @@ public class RT {
     public static String printGearModelDropDown(ArrayList<Gear_Model> gear_models, Gear_Model firstInList) {
         //https://stackoverflow.com/questions/18309059/drop-down-menu-text-field-in-one
         //https://www.w3schools.com/tags/tag_select.asp
-        String result = "<label>Gear Model (IID): ";
-        result += "<input id=\"gear_models\" list=\"modelList\"></label>";
-        result += "<datalist id=\"modelList\">";
+        String preResult = "<label>Gear Model (IID): ";
+        boolean done = false;
+        String result = "<datalist id=\"modelList\">";
         String afterFirst = "";
         for (Gear_Model gear_model : gear_models) {
             if (gear_model.id == firstInList.id) {
                 result += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
+                preResult += "<input id=\"gear_models\" list=\"modelList\" value=\"" + gear_model.id + "\"></label>";
+                done = true;
             } else {
                 afterFirst += "<option value=\"" + gear_model.id + "\">" + gear_model.description + "</option>";
             }
         }
+        if (!done) {
+            preResult  += "<input id=\"gear_models\" list=\"modelList\"></label>";
+        }
         result += afterFirst;
         result += "</datalist>";
+        result = preResult + result;
         return result;
     }
     

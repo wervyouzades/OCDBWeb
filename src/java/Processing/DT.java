@@ -322,7 +322,8 @@ public class DT {
     public static ArrayList<Gear> purgeGearArrayByUsablePresentGear(ArrayList<Gear> gear) {
         ArrayList<Gear> temp = new ArrayList<Gear>();
         for (Gear g : gear) {
-            if (!g.person.name.equalsIgnoreCase(OCDB.missing) && !g.person.name.equalsIgnoreCase(OCDB.unusable)) {
+            if (!g.person.name.equalsIgnoreCase(OCDB.missing) && !g.person.name.equalsIgnoreCase(OCDB.unusable)
+                    && !g.person.name.equalsIgnoreCase(OCDB.phased_out)) {
                 temp.add(g);
             }
         }

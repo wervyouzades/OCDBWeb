@@ -67,7 +67,7 @@ public class FT {
             }
             return temp;
         } else {
-            return ("GEAR ALREADY IN " + new_person.name + "'s POSSESSION");
+            return ("GEAR ALREADY IN " + RT.printLinkedPersonName(new_person) + "'s POSSESSION");
         }
     }
 
@@ -108,14 +108,14 @@ public class FT {
             try {
                 String temp = FT.addTransactionToDB(gear, gear.person, person, notes);
                 return "successfully checked out "
-                        + gear.gear_type.name + " CA" + gear.code + " to " + RT.printLinkedPersonName(person)  + 
+                        + gear.gear_type.name + " " + RT.printLinkedGearCode(gear) + " to " + RT.printLinkedPersonName(person)  + 
                         "\n" + temp;
             } catch (Exception e) {
                 return "failure: " + e.getMessage();
             }
         } else {
             return "gear already checked out<br>"
-                    + "transfer gear from " + RT.printLinkedPersonName(gear.person) + " to " + RT.printLinkedPersonName(person) + "?<br>"
+                    + "transfer gear " + gear.gear_type.name + " " + RT.printLinkedGearCode(gear) + " from " + RT.printLinkedPersonName(gear.person) + " to " + RT.printLinkedPersonName(person) + "?<br>"
                     + "<button type=\"button\" id=\"transfer\">Transfer</button>"
                     + "    <div id=\"result2\"></div>"
                     + "    <script>\n" +
@@ -183,7 +183,7 @@ public class FT {
             try {
                 String temp = FT.addTransactionToDB(gear, gear.person, DT.getPersonByName(OCDB.checked_in), notes);
                 return "successfully checked in "
-                        + gear.gear_type.name + " CA" + gear.code + " from " + RT.printLinkedPersonName(gear.person) +
+                        + gear.gear_type.name + " " + RT.printLinkedGearCode(gear) + " from " + RT.printLinkedPersonName(gear.person) +
                         "\n" + temp;
             } catch (Exception e) {
                 return "failure: " + e.getMessage();

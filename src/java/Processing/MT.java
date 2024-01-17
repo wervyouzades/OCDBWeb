@@ -2,6 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
+/**
+ *
+ * @author Wervy Ouzades
+ */
+
 package Processing;
 
 import com.google.gson.Gson;
@@ -13,10 +19,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- *
- * @author Wervy Ouzades
- */
 public class MT {
 
     public static String createMessage(String webhookUrl, String message) {

@@ -41,6 +41,7 @@ public class OCDB {
     public final static String checked_in = "GEAR_CLOSET";
     public final static String missing = "MISSING";
     public final static String unusable = "UNUSABLE";
+    public final static String phased_out = "PHASED_OUT";
     public static Scanner diyan = new Scanner(System.in);
     private static long a, b;
     
