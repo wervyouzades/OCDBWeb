@@ -153,6 +153,14 @@ public class IT {
         return price.replaceAll("[^0-9]", "");
     }
     
+    public static String processAddPersonToTrip(Trip trip, Person person) {
+        return FT.addPersonToTrip(trip, person);
+    }
+    
+    public static String processRemovePersonFromTrip(Trip trip, Person person) {
+        return FT.removePersonFromTrip(trip, person);
+    }
+    
     public static String inputGearCode() {
         String code = OCDB.diyan.nextLine();
         String updatedCode = code.replaceAll("[^0-9]", "");

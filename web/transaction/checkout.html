@@ -6,6 +6,12 @@
     <script>
       $(document).ready(function () {
         $("#header-container").load("../../OCDBWeb/header.html");
+        var data2 = {
+            qtype: "PDD"
+        };
+        $.get("query", data2, function (data2) {
+            $("#nameDropDown").html(data2);
+        });
       });
     </script>
     <style>table {
@@ -35,9 +41,11 @@
             <input type="text" id="notes">
         </p>
         <p>
-            <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="ex. sebastian desouza">
-        </p>
+            <label>Name
+                <input id="name" autocomplete="off" placeholder="ex. sebastian desouza" list="personList">
+            </label>
+        </p>        
+        <div id="nameDropDown"></div>
         <p>
             <label for="code">Gear Code:</label>
             <input type="text" id="code" placeholder="ex. 3 or CA3">

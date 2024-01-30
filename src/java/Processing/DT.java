@@ -392,6 +392,14 @@ public class DT {
         return temp;
     }
     
+    public static Trip getTripById(int id) {
+        for (Trip t : trips) {
+            if (t.id == id)
+                return t;
+        }
+        return null;
+    }
+    
     public static void populateLocalGearWithTransactions() {
         for (Gear g : gear) {
             g.transactions = new ArrayList<Transaction>();

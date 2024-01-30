@@ -16,6 +16,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <script>
       $(document).ready(function () {
         $("#header-container").load("../../OCDBWeb/header.html");
+        var data2 = {
+            qtype: "PDD"
+        };
+        $.get("query", data2, function (data2) {
+            $("#nameDropDown").html(data2);
+        });
       });
     </script>
         <link rel="icon" type="image/x-icon" href="https://allatoms.com/ocdb/icon.ico">
@@ -26,9 +32,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <form>
         <p>(blank fields will be ignored)</p>
         <p>
-            <label for="name">Person part of transaction: </label>
-            <input type="text" id="name" placeholder="ex. sebastian desouza">
-        </p>
+            <label>"Name "
+                <input id="name" autocomplete="off" placeholder="ex. sebastian desouza" list="personList">
+            </label>
+        </p>        
+        <div id="nameDropDown"></div>
         <p>
             <label for="code">Gear Code:</label>
             <input type="text" id="code" placeholder="ex. 3 or CA3">

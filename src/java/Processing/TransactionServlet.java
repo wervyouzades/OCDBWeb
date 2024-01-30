@@ -178,6 +178,21 @@ public class TransactionServlet extends HttpServlet {
                         out.println(e.getMessage());
                     }
                     break;
+                case "pdd"://person drop down
+                    /*out.println("<p>");
+                    for (int i = 0; i < DT.people.size(); i++) {
+                        out.println(DT.people.get(i));
+                    }
+                    out.println("</p>");*/
+                    try {
+                        out.println(RT.printPersonDropDownDatalist(DT.people));
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }
+                    break;
+                default:
+                    out.println("sebastian screwed smth up");
+                    break;
             }
         }
     }

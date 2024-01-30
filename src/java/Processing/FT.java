@@ -300,6 +300,36 @@ public class FT {
         }
         return "successfully edited gear IID" + id;
     }
+    
+    public static String addPersonToTrip(Trip trip, Person person) {
+        String SQL = "INSERT INTO roster (trip_id, person_id) VALUES (" + trip.id + ", " + person.id + ");";
+        try {
+            OCDB.connect();
+            Statement stmt = OCDB.conn.createStatement();
+            stmt.executeQuery(SQL);
+            OCDB.close();
+        } catch (SQLException ex) {
+            if (!ex.getMessage().equals ("No results were returned by the query.")){
+                return ex.getMessage();
+            }
+        }
+        return "successfully added person " + person.name + " to trip " + trip.name;
+    }
+    
+    public static String removePersonFromTrip(Trip trip, Person person) {
+        String SQL = "DELETE FROM roster WHERE trip_id = " + trip.id + " AND person_id = " + person.id + ";";
+        try {
+            OCDB.connect();
+            Statement stmt = OCDB.conn.createStatement();
+            stmt.executeQuery(SQL);
+            OCDB.close();
+        } catch (SQLException ex) {
+            if (!ex.getMessage().equals ("No results were returned by the query.")){
+                return ex.getMessage();
+            }
+        }
+        return "successfully removed person " + person.name + " from trip " + trip.name;
+    }
 
     public static void query() {//barebones
         String SQL = "";

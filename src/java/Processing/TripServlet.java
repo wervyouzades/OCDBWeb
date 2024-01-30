@@ -77,7 +77,38 @@ public class TripServlet extends HttpServlet {
 
                             out.println(RT.printGearNotesPrefilledInputBox(gear));
                             */
-
+                            out.println("<label>Name <input id=\"name\" autocomplete=\"off\" placeholder=\"ex. sebastian desouza\" "
+                                    + "list=\"personList\">\n</label>");
+                            out.println(RT.printPersonDropDownDatalist(DT.people));
+                            if (ST.hasEditPerms(request)) {
+                                out.println("<p><button type=\"button\" id=\"add\">Add Person to Trip</button>");
+                                out.println("<button type=\"button\" id=\"remove\">Remove Person from Trip</button></p>");
+                                out.println("<script>");
+                                out.println("        $(\"#add\").click(function() {\n" +
+"            const url = new URL(window.location.toLocaleString());\n" +
+"            var data = {\n" +
+"                qtype: \"AP\",\n" +
+"                tripIID: url.searchParams.get('iid'),\n" +
+"                name: $(\"#name\").val()\n" +
+"            };\n" +
+"            $.get(\"Trip\", data, function(data) {\n" +
+"                $(\"#editResult\").html(data);\n" +
+"            });\n" +
+"        });");
+                                out.println("        $(\"#remove\").click(function() {\n" +
+"            const url = new URL(window.location.toLocaleString());\n" +
+"            var data = {\n" +
+"                qtype: \"RP\",\n" +
+"                tripIID: url.searchParams.get('iid'),\n" +
+"                name: $(\"#name\").val()\n" +
+"            };\n" +
+"            $.get(\"Trip\", data, function(data) {\n" +
+"                $(\"#editResult\").html(data);\n" +
+"            });\n" +
+"        });");
+                                out.println("</script>");
+                            }
+                            
                         } catch (Exception e) {
                            out.println("<p>ERROR: bad url (debug: ");
                            out.println(e);
@@ -85,7 +116,24 @@ public class TripServlet extends HttpServlet {
                         }
                     } else {
                         if (ST.hasEditPerms(request)) {
-                            
+                            String name = request.getParameter("name");
+                            Person person = DT.getPersonByName(name);
+                            Trip trip = DT.getTripById(iid);
+                            if (person == null || trip == null) {
+                                out.println ("ERROR: person doesn't exist or isn't in database");
+                            } else {
+                                switch(qtype) {
+                                    case "ap"://add people
+                                        out.println(IT.processAddPersonToTrip(trip, person));
+                                        break;
+                                    case "rp"://remove people
+                                        out.println(IT.processRemovePersonFromTrip(trip, person));
+                                        break;
+                                    default:
+                                        out.println("sebastian screwed smth up");
+                                        break;
+                                }
+                            }
                         }
                     }
                 } else {
