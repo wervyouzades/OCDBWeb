@@ -38,6 +38,8 @@ public class DT {
     public static ArrayList<Gear_Type> gear_types;
     public static ArrayList<Trip> trips;
     public static ArrayList<Roster> rosters;
+    public static ArrayList<Certificate> certificates;
+    public static ArrayList<Certification> certifications;
     
     
     public static void populateLocalDB() {
@@ -363,6 +365,15 @@ public class DT {
         ArrayList<Transaction> temp = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.gear.id == gear.id) temp.add(t);
+        }
+        return temp;
+    }
+    
+    public static ArrayList<Transaction> purgeTransactionArrayByGearType(ArrayList<Transaction> transaction, String type) { //type already filtered
+        ArrayList<Transaction> temp = new ArrayList<Transaction>();
+        for (Transaction t : transactions) {
+            if (t.gear.gear_type.code.equalsIgnoreCase(type))
+                temp.add(t);
         }
         return temp;
     }

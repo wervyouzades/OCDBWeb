@@ -48,7 +48,7 @@ public class ReceiptServlet extends HttpServlet {
                     out.println("<p>I, " + person.name + ", by signing, acknowledge that <br>" +
 "•The gear listed above is my responsibility from the time it leaves the gear closet to the time it returns to the gear closet and is checked in. <br>" +
 "•Returning different gear than the gear listed above will not relieve me of my obligations towards the gear I have checked out. <br>" +
-"•Not returning all the gear listed above by the date March 8, 2024 or returning the gear listed above in a broken condition will result in a fine up to the amount specified per gear item.<br>" +
+"•Not returning all the gear listed above by the date November 15, 2024 or returning the gear listed above in a broken, wet, or incomplete condition will result in a fine up to the amount specified per gear item.<br>" +
 "<br>" +
 "__________________________");
                 } else {

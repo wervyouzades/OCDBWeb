@@ -176,9 +176,12 @@ public class QueryServlet extends HttpServlet {
                                     chillin = false;
                                     out.println("ERROR: gear not found");
                                 }
+                            } else if(code.length() == 0 && type.length() > 0) {
+                                type = IT.processGearTypeCode(type);
+                                transactions = DT.purgeTransactionArrayByGearType(transactions, type);
                             } else {
                                 chillin = false;
-                                out.println("ERROR: if you put in gear code you also have to put in gear type (and vice versa)");
+                                out.println("ERROR: if you put in gear code you also have to put in gear type");
                             }
                         }
                         if (chillin) {
